@@ -1,0 +1,107 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Classe do documento
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Nós usamos a classe "unb-cic".  Deixe apenas uma das linhas
+% abaixo não-comentada, dependendo se você for do bacharelado ou
+% da licenciatura.
+
+\documentclass[bacharelado]{unb-cic}
+%\documentclass[licenciatura]{unb-cic}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pacotes importados
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[brazil,american]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{indentfirst}
+\usepackage{natbib}
+\usepackage{xcolor,graphicx,url}
+\usepackage[utf8]{inputenc}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Cores dos links
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Veja o arquivos cores.tex se quiser ver que outras cores estão
+% pré-definidas.  Utilizando o comando \hypersetup abaixo nós
+% evitamos aquelas caixas vermelhas feias em volta dos links.
+
+\input{cores}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=DarkScarletRed,
+  citecolor=DarkScarletRed,
+  filecolor=DarkScarletRed,
+  urlcolor= DarkScarletRed
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Informações sobre a monografia
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Título da monografia}
+
+\orientador{\prof \dr Orientador}{CIC/UnB}
+%\coorientador[a]{\prof[a] \dr[a] Coorientadora}{MAT/UnB}
+\coordenador{\prof \dr Coordenador}{CIC/UnB}
+\diamesano{12}{dezembro}{2012}
+
+\membrobanca{\prof \dr Professor I}{CIC/UnB}
+\membrobanca{\prof \dr Professor II}{CIC/UnB}
+
+\autor{Nome Sobrenome}{UltimoNome}
+\CDU{004.4}
+
+\palavraschave{palvrachave1, palvrachave2, palvrachave3 }
+\keywords{keyword1, keyword2, keyword3}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Texto
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+  \maketitle
+  \pretextual
+
+  \begin{dedicatoria}
+  Dedico a....
+  \end{dedicatoria}
+
+  \begin{agradecimentos}
+  Agradeço a....
+  \end{agradecimentos}
+
+  \begin{resumo}
+  A ciência...
+  \end{resumo}
+
+  \selectlanguage{american}
+  \begin{abstract}
+  The science...
+  \end{abstract}
+  \selectlanguage{brazil}
+
+  \tableofcontents
+  \listoffigures
+  \listoftables
+
+  \textual
+  \input{capitulos/capitulo1}
+  \input{capitulos/capitulo2}
+  % ...
+
+  \postextual
+  \bibliographystyle{plain}
+  \bibliography{bibliografia}
+
+\end{document}
