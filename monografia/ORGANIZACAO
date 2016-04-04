@@ -5,10 +5,9 @@ sugestao de organizacao do tg:
 		- SPL (?, sei lá, pelo menos mencionar o propósito final do trabalho i.e. o Nirvana do Bonifácio kkk)
 		- FJ
 		- FFJ
-		- BNF e as ferramentas de geração automática que estamos utilizando
 	3. métodos e ferramentas de implementação
 		- COQ & Haskell
-		- bnfc & Happy
+		- bnfc & Happy 
 		- ??
 		- Profit
 	4. formalização
