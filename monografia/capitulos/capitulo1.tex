@@ -4,6 +4,13 @@ Neste artigo estamos interessados em provadores de teoremas assistidos, mais esp
 Coq, como ferramenta de auxílio na formalização da nossa implementação da linguagem 
 \textit{Feature Featherweigth Java} (FFJ), introduzida nas seções seguintes. 
 
+A formalização pode oferecer impulsos significativos no processo de abstração de um artefato
+do mundo real, como, por exemplo, a abstração representada por linguagens de programação. 
+Um modelo formal pode ser usado 
+para descrever alguns aspectos precisos do projeto, para definir e provar suas propriedades, 
+além de direcionar o foco a questões que poderiam vir a ser negligenciadas. 
+Estes são alguns dos objetivos que buscamos ao recorrer à formalização de nossa implementação.
+
 	\section{Coq}
 	Coq é um provador de teoremas automatizado  baseado na linguagem formal Calculo de Construções Indutivas, o qual em si mesmo combina tanto lógica de ordem superior quanto uma linguagem funtional ricamente-tipada. Através de uma linguagem vernacular de comandos, Coq permite:
 	\begin{itemize}
@@ -19,10 +26,46 @@ Coq, como ferramenta de auxílio na formalização da nossa implementação da l
 	\section{Featherweight Java}
 
 	Como FFJ é construída com base em \textit{Featherweight Java} (FJ), introduziremos
-brevemente as principais características desta linguagem
+brevemente as principais características desta linguagem.
+
+\textit{Featherweight Java} foi proposta por Igarashi et.\ al., como um cálculo 
+mínimo para modelar o sistema de tipos da linguagem Java~\cite{Igarashi99featherweightjava}.
+O projeto desta linguagem favorece compacidade ao invés de completude, possuindo apenas 
+cinco formas de expressão: criação de objeto, invocação de método, acesso a atributo, 
+coerção e variáveis. O propósito foi omitir o máximo de características da linguagem 
+enquanto ainda mantém o núcleo principal, para facilitar o modelo de formalização. Há 
+uma correspondência direta entre FJ e um núcleo puramente funcional de Java, no sentido 
+que todo programa em FJ é literalmente um executável de Java.
 
 
-	\section{Feature Featherweight Java}
+A seguir um exemplo de programa em FJ.
+
+\begin{lstlisting}
+class A extends Object {
+	A() { super(); }
+}
+class B extends Object {
+	B() { super(); }
+}
+class Pair extends Object {
+	Object fst;
+	Object snd;
+	Pair(Object fst, Object snd) {
+		super();
+		this.fst = fst;
+		this.snd = snd;
+	}
+	Pair setfst(Object newfst) {
+		return new Pair(newfst, this.snd);
+	}
+}
+\end{lstlisting}
+
+\section{Feature Featherweight Java}
+
+FFJ extende FJ com novas construções de linguagem orientados a composição de \textit{features},
+avaliação de acordos e regras de tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador 
+pode adicionar novas classes a um programa através da introdução de uma nova característica.
 	
 %texto.... referência~\cite{carpenter91}
 
