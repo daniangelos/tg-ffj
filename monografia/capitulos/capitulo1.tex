@@ -1,5 +1,5 @@
 \chapter{Introdução}
-Com o advento da teoria das provas e da teoria de tipos, ferramentas robustas para prova de corretude de linguagens de computação vêm sendo introduzidas e melhoradas nestas últimas duas décadas. Entre eles podemos citar SAT solvers, Provadores de teoremas automatizados e provadores de teoremas assistidos.
+Com o advento da teoria das provas e da teoria de tipos, ferramentas robustas para prova de corretude de linguagens de computação vêm sendo introduzidas e melhoradas nas últimas décadas. Entre eles podemos citar SAT solvers, Provadores de teoremas automatizados e provadores de teoremas assistidos.
 Neste artigo estamos interessados em provadores de teoremas assistidos, mais especificamente 
 Coq, como ferramenta de auxílio na formalização da nossa implementação da linguagem 
 \textit{Feature Featherweigth Java} (FFJ), introduzida nas seções seguintes. 
@@ -29,7 +29,7 @@ Estes são alguns dos objetivos que buscamos ao recorrer à formalização de no
 brevemente as principais características desta linguagem.
 
 \textit{Featherweight Java} foi proposta por Igarashi et.\ al., como um cálculo 
-mínimo para modelar o sistema de tipos da linguagem Java~\cite{Igarashi99featherweightjava}.
+mínimamente funcional para modelar o sistema de tipos da linguagem Java~\cite{Igarashi99featherweightjava}.
 O projeto desta linguagem favorece compacidade ao invés de completude, possuindo apenas 
 cinco formas de expressão: criação de objeto, invocação de método, acesso a atributo, 
 coerção e variáveis. O propósito foi omitir o máximo de características da linguagem 
@@ -63,8 +63,7 @@ class Pair extends Object {
 
 \section{Feature Featherweight Java}
 
-FFJ extende FJ com novas construções de linguagem orientados a composição de \textit{features},
-avaliação de acordos e regras de tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador 
+FFJ extende FJ com novas construções de linguagem orientados a composição de \textit{features}\cite{fop}, avaliação de acordos e regras de tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador 
 pode adicionar novas classes a um programa através da introdução de uma nova característica.
 	
 %texto.... referência~\cite{carpenter91}
