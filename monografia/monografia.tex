@@ -21,6 +21,7 @@
 \usepackage{natbib}
 \usepackage{xcolor,graphicx,url}
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
 
 
 
@@ -61,8 +62,8 @@
 \coautor{Daniella A.}{dos Angelos}
 \CDU{004.4}
 
-\palavraschave{palvrachave1, palvrachave2, palvrachave3 }
-\keywords{keyword1, keyword2, keyword3}
+\palavraschave{Verificação Formal, FFJ, Coq }
+\keywords{Formal Verification, FFJ, Coq}
 
 
 
@@ -74,31 +75,30 @@
   \maketitle
   \pretextual
 
-%  \begin{dedicatoria}
-%  Dedico a \dots
-%  \end{dedicatoria}%
+ % \begin{dedicatoria}
+  %Dedico a \dots
+  %\end{dedicatoria}
 
-%  \begin{agradecimentos}
-%  Agradeço a \dots
-%  \end{agradecimentos}
+  %\begin{agradecimentos}
+  %Agradeço a \dots
+  %\end{agradecimentos}
 
   \begin{resumo}
-  A ciência \dots
+  Especificação formal de linguagens vem provado sua eficácia na detecção de possíveis bugs e principalmente no entendimento mais profundo na estrutura da linguagem. Ferramentas de especificação formal e em provas assistida por computadores, como por exemplo Coq, vem sendo alvo de interesse crescente devido à robustez teórica. O objetivo primordial deste trabalho é juntar estas duas frentes e especificar formalmente Feature Featherweight Java em Coq e provar sua corretude.
   \end{resumo}
 
   \selectlanguage{american}
   \begin{abstract}
-  The science \dots
+  Languages formal especification are very efective to detect bugs and more importantly provides a deeper understanding of the structure of such. Formal especification tools, such as Coq, have been target of great research interest in the previous years, one of the main reasons is for its proved soundnes. The main objective of this paper is to bring together these two front and specify formaly Feature Featherweight Java with Coq and prove its soundnes.
   \end{abstract}
   \selectlanguage{brazil}
 
   \tableofcontents
-  \listoffigures
-  \listoftables
+  %\listoffigures
+  %\listoftables
 
   \textual
-  
-  \input{capitulos/introducao}
+  \input{capitulos/capitulo1}
   %\input{capitulos/capitulo2}
   % ...
 
