@@ -1,70 +1,102 @@
 \chapter{Introdução}
-Com o advento da teoria das provas e da teoria de tipos\cite{martinlof}, ferramentas robustas para prova de corretude de linguagens de computação vêm sendo introduzidas e melhoradas nas últimas décadas. Entre eles podemos citar SAT solvers, Provadores de teoremas automatizados e provadores de teoremas assistidos.
-Neste artigo estamos interessados em provadores de teoremas assistidos, mais especificamente 
-Coq, como ferramenta de auxílio na formalização da nossa implementação da linguagem 
-\textit{Feature Featherweigth Java} (FFJ), introduzida nas seções seguintes. 
 
-A formalização pode oferecer impulsos significativos no processo de abstração de um artefato
-do mundo real, como, por exemplo, a abstração representada por linguagens de programação. 
-Um modelo formal pode ser usado 
-para descrever alguns aspectos precisos do projeto, para definir e provar suas propriedades, 
-além de direcionar o foco a questões que poderiam vir a ser negligenciadas. 
-Estes são alguns dos objetivos que buscamos ao recorrer à formalização de nossa implementação.
 
-	\section{Coq}
-	Coq é um provador de teoremas automatizado  baseado na linguagem formal Calculo de Construções Indutivas\cite{coqart}, o qual em si mesmo combina tanto lógica de ordem superior quanto uma linguagem funtional ricamente-tipada. Através de uma linguagem vernacular de comandos, Coq permite:
-	\begin{itemize}
-		\item definir funções ou predicados, que podem ser avaliados eficientemente;
-		\item declarar teoremas matemáticos e especificações de software;
-		\item desenvolver provas formas destes teoremas de forma iterativa;
-		\item checar estas provas por uma certificação de kernell relativamente pequena;
-		\item extrair programas certificados para Objective Caml, Haskell ou Scheme.
-	\end{itemize}
-	Como um sistema de desenvolvimento de provas, Coq provê métodos de provas iterativos, algoritmos de decisão e semi-decisão, e uma linguagem de tatica que permite o usuário definir seus próprios métodos de prova. Conexão com uma calculadora de sistema algébrico externo e outros provadores de teoremas está disponível.
-	Como uma plataforma de formalização matemática ou de desenvolvimento de programas, coq provê suporte para notações de alta ordem, conteúdos implicitos e vários outros tipos úteis de macros.
+\section{Formal Semantics} In this article we are concearned in studying the
+formal semantics of programming languages, i.e. we are interested in the tools
+to understand and reason how programs behave. More specifically the semantics of
+Feature Featherweight Java.  For historical reasons the semantics of programming
+languages is often viewed as consisteing of three strands: 
 
-	\section{Featherweight Java}
+\begin{itemize} 
+    \item \textit{Operational semantics} describes the meaning of the
+        programming language by specifying how it executes on an abstract machine;
 
-	Como FFJ é construída com base em \textit{Featherweight Java} (FJ), introduziremos
-brevemente as principais características desta linguagem.
+    \item \textit{Denotational semantics} is a technique for defining the
+    meaning of programming languages. At one time called "mathematical
+    semantics", it uses the more abstract mathematical concepts of complete
+    partial orders, continous functions and least fixed points; 
 
-\textit{Featherweight Java} foi proposta por Igarashi et.\ al., como um cálculo 
-mínimamente funcional para modelar o sistema de tipos da linguagem Java~\cite{Igarashi99featherweightjava}.
-O projeto desta linguagem favorece compacidade ao invés de completude, possuindo apenas 
-cinco formas de expressão: criação de objeto, invocação de método, acesso a atributo, 
-coerção e variáveis. O propósito foi omitir o máximo de características da linguagem 
-enquanto ainda mantém o núcleo principal, para facilitar o modelo de formalização. Há 
-uma correspondência direta entre FJ e um núcleo puramente funcional de Java, no sentido 
-que todo programa em FJ é literalmente um executável de Java.
+    \item \textit{Axiomatic semantics} tries to fix the meaning of a programming
+        contruct by giving proof rules for it whithin a program logic. Thus
+        axiomatic semantics emphasises proof of correctness right from the start.
+\end{itemize}
+
+It would however be wrong to view these three styles as in opposition to
+each other. They each have their uses. A clear operational semantics is very
+helpful in implementation. Axiomatic semantics for special kinds of
+languages can give strikingly elegant proof systems, useful in developing as
+well as verifying programs. Denotational semantics provides the deepest and
+most widely applicable thecniques, underpinned by a rich mathematical
+theory. Indeed, the different styles  of semantics are highly dependent on
+each other. 
+
+For this we will need a nice understanding in logic and set theory.
+
+
+Com o advento da teoria das provas e da teoria de tipos\cite{martinlof},
+ferramentas robustas para prova de corretude de linguagens de computação vêm
+sendo introduzidas e melhoradas nas últimas décadas. Entre eles podemos citar
+SAT solvers, Provadores de teoremas automatizados e provadores de teoremas
+assistidos.  Neste artigo estamos interessados em provadores de teoremas
+assistidos, mais especificamente Coq, como ferramenta de auxílio na formalização
+da nossa implementação da linguagem \textit{Feature Featherweigth Java} (FFJ),
+introduzida nas seções seguintes. 
+
+A formalização pode oferecer impulsos significativos no processo de abstração de
+um artefato do mundo real, como, por exemplo, a abstração representada por
+linguagens de programação.  Um modelo formal pode ser usado para descrever
+alguns aspectos precisos do projeto, para definir e provar suas propriedades,
+além de direcionar o foco a questões que poderiam vir a ser negligenciadas.
+Estes são alguns dos objetivos que buscamos ao recorrer à formalização de nossa
+implementação.
+
+    \section{Coq} Coq é um provador de teoremas automatizado  baseado na
+    linguagem formal Calculo de Construções Indutivas\cite{coqart}, o qual em si
+    mesmo combina tanto lógica de ordem superior quanto uma linguagem funtional
+    ricamente-tipada. Através de uma linguagem vernacular de comandos, Coq
+    permite: \begin{itemize} \item definir funções ou predicados, que podem ser
+    avaliados eficientemente; \item declarar teoremas matemáticos e
+    especificações de software; \item desenvolver provas formas destes teoremas
+    de forma iterativa; \item checar estas provas por uma certificação de
+    kernell relativamente pequena; \item extrair programas certificados para
+    Objective Caml, Haskell ou Scheme.  \end{itemize} Como um sistema de
+    desenvolvimento de provas, Coq provê métodos de provas iterativos,
+    algoritmos de decisão e semi-decisão, e uma linguagem de tatica que permite
+    o usuário definir seus próprios métodos de prova. Conexão com uma
+    calculadora de sistema algébrico externo e outros provadores de teoremas
+    está disponível.  Como uma plataforma de formalização matemática ou de
+    desenvolvimento de programas, coq provê suporte para notações de alta ordem,
+    conteúdos implicitos e vários outros tipos úteis de macros.
+
+    \section{Featherweight Java}
+
+    Como FFJ é construída com base em \textit{Featherweight Java} (FJ),
+    introduziremos brevemente as principais características desta linguagem.
+
+\textit{Featherweight Java} foi proposta por Igarashi et.\ al., como um cálculo
+mínimamente funcional para modelar o sistema de tipos da linguagem
+Java~\cite{Igarashi99featherweightjava}.  O projeto desta linguagem favorece
+compacidade ao invés de completude, possuindo apenas cinco formas de expressão:
+criação de objeto, invocação de método, acesso a atributo, coerção e variáveis.
+O propósito foi omitir o máximo de características da linguagem enquanto ainda
+mantém o núcleo principal, para facilitar o modelo de formalização. Há uma
+correspondência direta entre FJ e um núcleo puramente funcional de Java, no
+sentido que todo programa em FJ é literalmente um executável de Java.
 
 
 A seguir um exemplo de programa em FJ.
 
-\begin{lstlisting}
-class A extends Object {
-	A() { super(); }
-}
-class B extends Object {
-	B() { super(); }
-}
-class Pair extends Object {
-	Object fst;
-	Object snd;
-	Pair(Object fst, Object snd) {
-		super();
-		this.fst = fst;
-		this.snd = snd;
-	}
-	Pair setfst(Object newfst) {
-		return new Pair(newfst, this.snd);
-	}
-}
-\end{lstlisting}
+\begin{lstlisting} class A extends Object { A() { super(); } } class B extends
+Object { B() { super(); } } class Pair extends Object { Object fst; Object snd;
+Pair(Object fst, Object snd) { super(); this.fst = fst; this.snd = snd; } Pair
+setfst(Object newfst) { return new Pair(newfst, this.snd); } } \end{lstlisting}
 
 \section{Feature Featherweight Java}
 
-FFJ extende FJ com novas construções de linguagem orientados a composição de \textit{features}\cite{fop}, avaliação de acordos e regras de tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador 
-pode adicionar novas classes a um programa através da introdução de uma nova característica.
+FFJ extende FJ com novas construções de linguagem orientados a composição de
+\textit{features}\cite{fop}, avaliação de acordos e regras de
+tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador pode adicionar
+novas classes a um programa através da introdução de uma nova característica.
 	
 %texto.... referência~\cite{carpenter91}
 
