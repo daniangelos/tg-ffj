@@ -66,23 +66,36 @@ implementação.
     desenvolvimento de programas, coq provê suporte para notações de alta ordem,
     conteúdos implicitos e vários outros tipos úteis de macros.
 
-    \section{Featherweight Java}
+\section{Featherweight Java}
 
-    Como FFJ é construída com base em \textit{Featherweight Java} (FJ),
-    introduziremos brevemente as principais características desta linguagem.
+%Como FFJ é construída com base em \textit{Featherweight Java} (FJ),
+%introduziremos brevemente as principais características desta linguagem.
+The constructions of FFJ are based on the constructions of \textit{Featherweight
+Java} (FJ), therefore, we will briefly introduce the main characteristics of
+this language.
 
-\textit{Featherweight Java} foi proposta por Igarashi et.\ al., como um cálculo
-mínimamente funcional para modelar o sistema de tipos da linguagem
-Java~\cite{Igarashi99featherweightjava}.  O projeto desta linguagem favorece
-compacidade ao invés de completude, possuindo apenas cinco formas de expressão:
-criação de objeto, invocação de método, acesso a atributo, coerção e variáveis.
-O propósito foi omitir o máximo de características da linguagem enquanto ainda
-mantém o núcleo principal, para facilitar o modelo de formalização. Há uma
-correspondência direta entre FJ e um núcleo puramente funcional de Java, no
-sentido que todo programa em FJ é literalmente um executável de Java.
+\textit{Featherweight Java} was proposed by Igarash et.\ al., as a minimal core
+calculus for modeling Java's type system~\cite{Igarashi99featherweightjava}. The 
+design of this language favors compactness over completeness, having just five 
+forms of expression: object creation, method invocation, field access, casting
+and variables.
+The purpose was to omit the maximum number of Java's characteristics while still
+maintaina the main core, to ease the formalization model.
+There is a direct correspondence between FJ and a purely functional core of
+Java, in the sense that every FJ program is literally an executable Java
+program.
 
+%unecessary?
+The compactness of FJ is important because the proof of soundness becomes very
+simple as the attention can be paid on essential aspects of the language, then
+a rigorous soundness proof for even a significant extension of FJ may remain
+manageable. This is related to the authors's main goal: to make a proof of type
+soundness (``well-typed programs do not get stuck'') as concise as possible, while
+still capturing the essence of the soundess argument for the full Java language.
 
-A seguir um exemplo de programa em FJ\@.
+In FJ, a program consists of a collection of class definitions, later on defined
+as a class table, and an expression to be evaluated. Here is an example of some typical
+class definitions in FJ and a possible expression for this definitions.
 
 \begin{verbatim} 
 class A extends Object {
@@ -90,7 +103,7 @@ class A extends Object {
 } 
 
 class B extends Object { 
-B() { super(); }
+    B() { super(); }
 } 
 
 class Pair extends Object { 
@@ -104,7 +117,13 @@ class Pair extends Object {
     Pair setfst(Object newfst) { 
         return new Pair(newfst, this.snd); 
     } 
-} \end{verbatim}
+} 
+
+new Pair(new A(), new B()).setfst(new B())
+
+\end{verbatim}
+
+    
 
 \section{Feature Featherweight Java}
 
