@@ -1,8 +1,7 @@
 \chapter{Introdução}
 
-
 \section{Formal Semantics} In this article we are concearned in studying the
-formal semantics of programming languages, i.e. we are interested in the tools
+formal semantics of programming languages, i.e.\ we are interested in the tools
 to understand and reason how programs behave. More specifically the semantics of
 Feature Featherweight Java.  For historical reasons the semantics of programming
 languages is often viewed as consisteing of three strands: 
@@ -12,8 +11,8 @@ languages is often viewed as consisteing of three strands:
         programming language by specifying how it executes on an abstract machine;
 
     \item \textit{Denotational semantics} is a technique for defining the
-    meaning of programming languages. At one time called "mathematical
-    semantics", it uses the more abstract mathematical concepts of complete
+    meaning of programming languages. At one time called ``mathematical
+    semantics'' it uses the more abstract mathematical concepts of complete
     partial orders, continous functions and least fixed points; 
 
     \item \textit{Axiomatic semantics} tries to fix the meaning of a programming
@@ -31,7 +30,6 @@ theory. Indeed, the different styles  of semantics are highly dependent on
 each other. 
 
 For this we will need a nice understanding in logic and set theory.
-
 
 Com o advento da teoria das provas e da teoria de tipos\cite{martinlof},
 ferramentas robustas para prova de corretude de linguagens de computação vêm
@@ -84,12 +82,29 @@ correspondência direta entre FJ e um núcleo puramente funcional de Java, no
 sentido que todo programa em FJ é literalmente um executável de Java.
 
 
-A seguir um exemplo de programa em FJ.
+A seguir um exemplo de programa em FJ\@.
 
-\begin{lstlisting} class A extends Object { A() { super(); } } class B extends
-Object { B() { super(); } } class Pair extends Object { Object fst; Object snd;
-Pair(Object fst, Object snd) { super(); this.fst = fst; this.snd = snd; } Pair
-setfst(Object newfst) { return new Pair(newfst, this.snd); } } \end{lstlisting}
+\begin{verbatim} 
+class A extends Object {
+    A() { super(); } 
+} 
+
+class B extends Object { 
+B() { super(); }
+} 
+
+class Pair extends Object { 
+    Object fst; 
+    Object snd;
+    Pair(Object fst, Object snd) { 
+        super(); 
+        this.fst = fst; 
+        this.snd = snd; 
+    } 
+    Pair setfst(Object newfst) { 
+        return new Pair(newfst, this.snd); 
+    } 
+} \end{verbatim}
 
 \section{Feature Featherweight Java}
 
@@ -97,7 +112,7 @@ FFJ extende FJ com novas construções de linguagem orientados a composição de
 \textit{features}\cite{fop}, avaliação de acordos e regras de
 tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador pode adicionar
 novas classes a um programa através da introdução de uma nova característica.
-	
+    
 %texto.... referência~\cite{carpenter91}
 
 
