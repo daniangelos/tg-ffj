@@ -3,7 +3,7 @@
 \section{Formal Semantics} In this article we are concearned in studying the
 formal semantics of programming languages, i.e.\ we are interested in the tools
 to understand and reason how programs behave. More specifically the semantics of
-Feature Featherweight Java.  For historical reasons the semantics of programming
+Feature Featherweight Java (FFJ).  For historical reasons the semantics of programming
 languages is often viewed as consisteing of three strands: 
 
 \begin{itemize} 
@@ -48,24 +48,6 @@ além de direcionar o foco a questões que poderiam vir a ser negligenciadas.
 Estes são alguns dos objetivos que buscamos ao recorrer à formalização de nossa
 implementação.
 
-    \section{Coq} Coq é um provador de teoremas automatizado  baseado na
-    linguagem formal Calculo de Construções Indutivas\cite{coqart}, o qual em si
-    mesmo combina tanto lógica de ordem superior quanto uma linguagem funtional
-    ricamente-tipada. Através de uma linguagem vernacular de comandos, Coq
-    permite: \begin{itemize} \item definir funções ou predicados, que podem ser
-    avaliados eficientemente; \item declarar teoremas matemáticos e
-    especificações de software; \item desenvolver provas formas destes teoremas
-    de forma iterativa; \item checar estas provas por uma certificação de
-    kernell relativamente pequena; \item extrair programas certificados para
-    Objective Caml, Haskell ou Scheme.  \end{itemize} Como um sistema de
-    desenvolvimento de provas, Coq provê métodos de provas iterativos,
-    algoritmos de decisão e semi-decisão, e uma linguagem de tatica que permite
-    o usuário definir seus próprios métodos de prova. Conexão com uma
-    calculadora de sistema algébrico externo e outros provadores de teoremas
-    está disponível.  Como uma plataforma de formalização matemática ou de
-    desenvolvimento de programas, coq provê suporte para notações de alta ordem,
-    conteúdos implicitos e vários outros tipos úteis de macros.
-
 \section{Featherweight Java}
 
 %Como FFJ é construída com base em \textit{Featherweight Java} (FJ),
@@ -77,13 +59,27 @@ this language.
 \textit{Featherweight Java} was proposed by Igarash et.\ al., as a minimal core
 calculus for modeling Java's type system~\cite{Igarashi99featherweightjava}. The 
 design of this language favors compactness over completeness, having just five 
-forms of expression: object creation, method invocation, field access, casting
-and variables.
+forms of expression:
+\begin{itemize}
+    \item object creation
+    \item method invocation
+    \item field access
+    \item casting 
+    \item variables
+\end{itemize}
+
 The purpose was to omit the maximum number of Java's characteristics while still
 maintaina the main core, to ease the formalization model.
 There is a direct correspondence between FJ and a purely functional core of
 Java, in the sense that every FJ program is literally an executable Java
 program.
+
+You can notice that even assignment was omitted as a form of expression (it
+appears in field assignment on constructors using \texttt{this}, exclusively), it
+follows from this that all fields and method parameters are implicity marked
+\texttt{final}. Therefore, FJ is restricted to a ``functional'' fragment of
+Java. The authors state that it is easy to encode the lambda calculus to FJ to
+prove that it is computationally complete.
 
 %unecessary?
 The compactness of FJ is important because the proof of soundness becomes very
@@ -91,10 +87,10 @@ simple as the attention can be paid on essential aspects of the language, then
 a rigorous soundness proof for even a significant extension of FJ may remain
 manageable. This is related to the authors's main goal: to make a proof of type
 soundness (``well-typed programs do not get stuck'') as concise as possible, while
-still capturing the essence of the soundess argument for the full Java language.
+still capturing the essence of the soundness argument for the full Java language.
 
 In FJ, a program consists of a collection of class definitions, later on defined
-as a class table, and an expression to be evaluated. Here is an example of some typical
+as the class table, and an expression to be evaluated. Here is an example of some typical
 class definitions in FJ and a possible expression for this definitions.
 
 \begin{verbatim} 
@@ -120,24 +116,23 @@ class Pair extends Object {
 } 
 
 new Pair(new A(), new B()).setfst(new B())
-
 \end{verbatim}
 
-    
+\subsection{Syntax}
+
+
+
+\subsection{Typing}
 
 \section{Feature Featherweight Java}
 
-FFJ extende FJ com novas construções de linguagem orientados a composição de
-\textit{features}\cite{fop}, avaliação de acordos e regras de
-tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador pode adicionar
-novas classes a um programa através da introdução de uma nova característica.
-    
-%texto.... referência~\cite{carpenter91}
+This language extends FJ with constructions of \textit{feature-oriented
+programming} (FOP) by new languages constructs for feature composition,
+according evaluation and type rules.
 
-
-
-
-
-
+%FFJ extende FJ com novas construções de linguagem orientados a composição de
+%\textit{features}\cite{fop}, avaliação de acordos e regras de
+%tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador pode adicionar
+%novas classes a um programa através da introdução de uma nova característica.
 
 
