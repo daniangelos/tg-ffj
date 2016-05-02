@@ -69,22 +69,26 @@ forms of expression:
 \end{itemize}
 
 The purpose was to omit the maximum number of Java's characteristics while still
-maintaina the main core, to ease the formalization model.
+maintain a the main core, to ease the formalization model.
 There is a direct correspondence between FJ and a purely functional core of
 Java, in the sense that every FJ program is literally an executable Java
 program.
 
-You can notice that even assignment was omitted as a form of expression (it
-appears in field assignment on constructors using \texttt{this}, exclusively), it
-follows from this that all fields and method parameters are implicity marked
+%p: avoid using parenthesis, it is harder to understand 
+%p: maybe we should consider explaining this after the example, then we can
+%point to the constructor and everythings makes sense
+Notice that FJ doesn't even allow assignment as a form of expression.
+Assignment is used exclusively in field assignment inside the  constructors
+using \texttt{this}. Thus all fields and method parameters are implicity marked
 \texttt{final}. Therefore, FJ is restricted to a ``functional'' fragment of
 Java. The authors state that it is easy to encode the lambda calculus to FJ to
 prove that it is computationally complete.
 
-%unecessary?
-The compactness of FJ is important because the proof of soundness becomes very
+%d: unecessary?
+%p: I think it is ok
+The compactness of FJ is important because the soundness proof becomes very
 simple as the attention can be paid on essential aspects of the language, then
-a rigorous soundness proof for even a significant extension of FJ may remain
+a rigorous soundness proof for even a significant extension of FJ remains
 manageable. This is related to the authors's main goal: to make a proof of type
 soundness (``well-typed programs do not get stuck'') as concise as possible, while
 still capturing the essence of the soundness argument for the full Java language.
