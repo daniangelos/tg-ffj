@@ -104,10 +104,10 @@ As examples of \textit{judgements} we have:
 \begin{table}[h!]
     \begin{tabular}{cc}
         $n$ nat & $n$ is a natural number \\
-        $n$ = $n_1$ + $n_2$ $n$ & is the sum of $n_1$ and $n_2$\\
+        $n$ = $n_1$ + $n_2$ & $n$ is the sum of $n_1$ and $n_2$\\
         t type & t is a type\\
         e : t & expression e has type t\\
-        e || v & expression e has type v
+        e $ \Downarrow $ v & expression e has type v
     \end{tabular}
     \caption{}
 \end{table}
@@ -168,7 +168,66 @@ For example, this is a derivation of succ(succ(succ(zero))) nat:
       {succ(succ(zero))}}
     {succ(succ(succ(zero)))}
 \end{mathpar}
-\ref{natrules}
+
+To show that an inductively defined judgment is derivable, we need only find a
+derivation for it. There are two main methods for finding derivations, called \textit{forward chaining}, or \textit{bottom-up construction}, and \textit{backward chaining}, or \textit{top-down construction}.
+Forward chaining starts with the axioms and works forward towards the desired
+conclusion, whereas backward chaining starts with the desired conclusion and works backwards towards the axioms.
+
+More precisely, forward chaining search maintains a set of derivable judgments and
+continually extends this set by adding to it the conclusion of any rule all of whose
+premises are in that set. Initially, the set is empty; the process terminates when the
+desired judgment occurs in the set. Assuming that all rules are considered at every stage,
+forward chaining will eventually find a derivation of any derivable judgment, but it is
+impossible (in general) to decide algorithmically when to stop extending the set and
+conclude that the desired judgment is not derivable. We may go on and on adding more
+judgments to the derivable set without ever achieving the intended goal. It is a matter of
+understanding the global properties of the rules to determine that a given judgment is
+not derivable.
+
+
+Forward chaining is undirected in the sense that it does not take account of the end
+goal when deciding how to proceed at each step. In contrast, backward chaining is
+goal-directed. Backward chaining search maintains a queue of current goals,
+judgments whose derivations are to be sought. Initially, this set consists solely of the
+judgment we wish to derive. At each stage, we remove a judgment from the queue
+and consider all rules whose conclusion is that judgment. For each such rule,
+we add the premises of that rule to the back of the queue, and continue. If
+there is more than one such rule, this process must be repeated, with the same
+starting queue, for each candidate rule. The process terminates whenever the
+queue is empty, all goals having been achieved; any pending consideration of
+candidate rules along the way can be discarded. As with forward chaining,
+backward chaining will eventually find a derivation of any derivable judgment, but
+there is, in general, no algorithmic method for determining in general whether
+the current goal is derivable. If it is not, we may futilely add more and more
+judgments to the goal set, never reaching a point at which all goals have been
+satisfied.
+
+
+\section{Rule Induction}
+
+Because an inductive definition specifies the \textit{strongest} judgment form closed under a
+collection of rules, we may reason about them by \textit{rule induction}. The principle of rule
+induction states that to show that a property $a\ \mathcal{P}$ holds whenever $a \ \mathsf{J}$ is derivable, it is enough to show that $\mathcal{P}$ is \textit{closed under}, or \textit{respects}, the rules defining the judgment form $\mathsf{J}$. More precisely, the property $\mathcal{P}$ respects the rule
+
+\begin{mathpar} 
+    \inferrule
+    {a_1 \mathsf{J} \ ... \ a_k \mathsf{J}}
+    {a \mathsf{J}}
+\end{mathpar}
+if $\mathcal{P}(a)$ holds whenever $\mathcal{P}(a_1),...,\mathcal{P}(a_k)$ do. The assumptions $\mathcal{P}(a_1),...,\mathcal{P}(a_k)$ are called the \textit{inductive hypotheses}, and $\mathcal{P}(a)$ is called \textit{inductive conclusion} of the inference.
+
+The principle of rule induction is simply the expression of the definition of an
+inductively defined judgment form as the \textit{strongest} judgment form closed under the rules comprising the definition. Thus, the judgment form defined by a set of rules is both (a) closed under those rules, and (b) sufficient for any other property also closed under those rules. The former means that a derivation is evidence for the validity of a judgment; the
+latter means that we may reason about an inductively defined judgment form by rule induction
+
+When specialized to the nat rules, the principle of rule induction states that to show $\mathcal{P}(a)$ whenver $a \ nat$, it is enough to show:
+
+\begin{enumerate}
+        \item $P(zero)$
+        \item for every $a$, if $\mathcal{P}(a)$, then $\mathcal{P}(succ(a))$.
+\end{enumerate}
+The sufficiency of these conditions is the familiar principle of \textit{mathematical induction}
 
 \section{Type Safety}
 FJ and FFJ are \textit{safe} (or, \textit{type safe}, or \textit{strongly
