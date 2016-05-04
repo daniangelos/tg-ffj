@@ -6,7 +6,8 @@ soundnes in Coq.
 But before delving through the definition of FFJ we will first provide
 important formal definition to better understand the motivation of our work.
 
-Quando a introducao estiver pronta adicionar aqui uma breve explciacao sobre a estrutura da introducao.
+Quando a introducao estiver pronta adicionar aqui uma breve explciacao sobre a
+estrutura da introducao.
 
 \section{Abstract Syntax}
 Robert Harper in~\cite{practicalFoundations} defines Programming Languages
@@ -90,8 +91,98 @@ expression $let x be 7 in x+x$ ocurrences of x in the addition refer to
 the variable introduced by the let. On the other and in the expression
 $let be x*x in x+x$, occurrences of x within the multiplication refer
 to a different variable than occurring whithin the addition.
-\section{Type Safety}
 
+\section{Inductive Definitions}
+An inductive definition consists of a set of \textit{rules} for deriving
+\textit{judgements}, or \textit{assertion}. Judgments are statements
+about one or more abt's of some sort.  The rules specify necessary and
+sufficient conditions for the validity of a judgement, and hence
+determine its meaning.
+
+As examples of \textit{judgements} we have:
+
+\begin{table}[h!]
+    \begin{tabular}{cc}
+        $n$ nat & $n$ is a natural number \\
+        $n$ = $n_1$ + $n_2$ $n$ & is the sum of $n_1$ and $n_2$\\
+        t type & t is a type\\
+        e : t & expression e has type t\\
+        e || v & expression e has type v
+    \end{tabular}
+    \caption{}
+\end{table}
+
+A judgment states that one or more abstract binding trees have a property
+or stand in some relation to one another.
+
+\section{Inference Rules}
+An \textit{inductive definition} of a judgment form consists of a collection of \textit{rules} of the form
+
+\begin{mathpar}
+    \label{natrules1}
+    \inferrule
+    {J_1 \and ... \and J_k}
+    {J}
+\end{mathpar}
+
+in which $J$ and $J_1, ..., J_k$ are all judgments of the form
+being defined. The judgments above the horizontal line are called
+the \textit{premises} of the rule, and the judgement below the
+line is called its \textit{conclusion}. If a rule has no premises
+the rule is called an \textit{axiom}; otherwise it is called a
+\textit{proper rule}.
+
+For example, the following rules form an inductive definition of the judgement form - nat:
+
+\begin{mathpar}
+    \label{natrules2}
+    \inferrule
+    { }
+    {zero \ nat}
+\end{mathpar}
+
+\begin{mathpar} 
+    \inferrule
+    {a \ nat}
+    {succ(a) \ nat}
+\end{mathpar}
+
+These rules specify that a nat holds whenever either a is zero,
+or a is succ(b) where b nat for some b. Taking these rules to be
+exhaustive, it follows that a nat iff a is a natural number.
+
+\section{Derivation}
+To show that an iductively defined judgement holds, it is enough to exhibit a derivation of it. A derivation of a judgement is a finite composition of rules, starting with axioms and ending with that judgment. It may be thought of as a tree in which each node is a rule whose children are derivations of its premises. We sometimes say that a derivation of J is evidence for the validity of an inductively defined judgement J.
+
+We usually depict derivations as trees with the conclusion at the bottom, and with the children of a node corresponding to a rule appearing above it as evidence for the premises of that rule.
+
+For example, this is a derivation of succ(succ(succ(zero))) nat:
+
+\begin{mathpar}
+    \label{natrules}
+    \inferrule*
+      {\inferrule* 
+        {\inferrule* 
+          {\inferrule* { } {zero \ nat}}
+        {succ(zero)}}
+      {succ(succ(zero))}}
+    {succ(succ(succ(zero)))}
+\end{mathpar}
+\ref{natrules}
+
+\section{Type Safety}
+FJ and FFJ are \textit{safe} (or, \textit{type safe}, or \textit{strongly
+typed}). Informally, this means that certain kinds of mismatches cannot
+arise during execution. For example, type safety for E states
+that it will never arise that a number is to be added to a
+string, or that two
+numbers are to be concatenated, neither of which is meaningful.
+
+This means that evaluation cannot get stuck in a state for which no
+transition is possible, corresponding in implementation terms to the
+absence of "ilegal instruction" errors at execution time. This is proved
+by showing that each step of transition can never "go off into the
+weeds", and hence can never encounter an illegal instruction.
 
 
 \section{Formal Semantics} 
