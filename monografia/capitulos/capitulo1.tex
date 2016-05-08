@@ -1,4 +1,6 @@
 \chapter{Introdução}
+
+
 The main goal of this work is to develop an interpreter for Feature
 Featherweight Java, in the future it will be provided a formal proof of its
 soundnes in Coq.
@@ -104,10 +106,10 @@ As examples of \textit{judgements} we have:
 \begin{table}[h!]
     \begin{tabular}{cc}
         $n$ nat & $n$ is a natural number \\
-        $n$ = $n_1$ + $n_2$ $n$ & is the sum of $n_1$ and $n_2$\\
+        $n$ = $n_1$ + $n_2$ & $n$ is the sum of $n_1$ and $n_2$\\
         t type & t is a type\\
         e~: t & expression e has type t\\
-        e || v & expression e has type v
+        e $ \Downarrow $ v & expression e has type v
     \end{tabular}
     \caption{}
 \end{table}
@@ -116,7 +118,8 @@ A judgment states that one or more abstract binding trees have a property
 or stand in some relation to one another.
 
 \section{Inference Rules}
-An \textit{inductive definition} of a judgment form consists of a collection of \textit{rules} of the form
+An \textit{inductive definition} of a judgment form consists of a collection of
+\textit{rules} of the form
 
 \begin{mathpar}
 \label{natrules1}
@@ -174,6 +177,294 @@ For example, this is a derivation of succ~(succ~(succ~(zero))) nat:
     {succ~(succ~(succ~(zero)))}
 \end{mathpar}~\ref{natrules}
 
+To show that an inductively defined judgment is derivable, we need only find a
+derivation for it. There are two main methods for finding derivations, called
+\textit{forward chaining}, or \textit{bottom-up construction}, and
+\textit{backward chaining}, or \textit{top-down construction}.
+Forward chaining starts with the axioms and works forward towards the desired
+conclusion, whereas backward chaining starts with the desired conclusion and
+works backwards towards the axioms.
+
+More precisely, forward chaining search maintains a set of derivable judgments and
+continually extends this set by adding to it the conclusion of any rule all of whose
+premises are in that set. Initially, the set is empty; the process terminates when the
+desired judgment occurs in the set. Assuming that all rules are considered at every stage,
+forward chaining will eventually find a derivation of any derivable judgment, but it is
+impossible (in general) to decide algorithmically when to stop extending the set and
+conclude that the desired judgment is not derivable. We may go on and on adding more
+judgments to the derivable set without ever achieving the intended goal. It is a matter of
+understanding the global properties of the rules to determine that a given judgment is
+not derivable.
+
+
+Forward chaining is undirected in the sense that it does not take account of the end
+goal when deciding how to proceed at each step. In contrast, backward chaining is
+goal-directed. Backward chaining search maintains a queue of current goals,
+judgments whose derivations are to be sought. Initially, this set consists solely of the
+judgment we wish to derive. At each stage, we remove a judgment from the queue
+and consider all rules whose conclusion is that judgment. For each such rule,
+we add the premises of that rule to the back of the queue, and continue. If
+there is more than one such rule, this process must be repeated, with the same
+starting queue, for each candidate rule. The process terminates whenever the
+queue is empty, all goals having been achieved; any pending consideration of
+candidate rules along the way can be discarded. As with forward chaining,
+backward chaining will eventually find a derivation of any derivable judgment, but
+there is, in general, no algorithmic method for determining in general whether
+the current goal is derivable. If it is not, we may futilely add more and more
+judgments to the goal set, never reaching a point at which all goals have been
+satisfied.
+
+
+\section{Rule Induction}
+
+Because an inductive definition specifies the \textit{strongest} judgment form closed under a
+collection of rules, we may reason about them by \textit{rule induction}. The principle of rule
+induction states that to show that a property $a\ \mathcal{P}$ holds whenever $a
+\ \mathsf{J}$ is derivable, it is enough to show that $\mathcal{P}$ is
+\textit{closed under}, or \textit{respects}, the rules defining the judgment
+form $\mathsf{J}$. More precisely, the property $\mathcal{P}$ respects the rule
+
+\begin{mathpar} 
+    \inferrule
+    {a_1 \mathsf{J} \ \ldots \ a_k \mathsf{J}}
+    {a \mathsf{J}}
+\end{mathpar}
+if $\mathcal{P}(a)$ holds whenever $\mathcal{P}(a_1),\ldots,\mathcal{P}(a_k)$ do.
+The assumptions $\mathcal{P}(a_1),\ldots,\mathcal{P}(a_k)$ are called the
+\textit{inductive hypotheses}, and $\mathcal{P}(a)$ is called \textit{inductive
+conclusion} of the inference.
+
+The principle of rule induction is simply the expression of the definition of an
+inductively defined judgment form as the \textit{strongest} judgment form closed
+under the rules comprising the definition. Thus, the judgment form defined by a
+set of rules is both (a) closed under those rules, and (b) sufficient for any
+other property also closed under those rules. The former means that a derivation
+is evidence for the validity of a judgment; the
+latter means that we may reason about an inductively defined judgment form by rule induction
+
+When specialized to the nat rules, the principle of rule induction states that
+to show $\mathcal{P}(a)$ whenver $a \ nat$, it is enough to show:
+
+\begin{enumerate}
+        \item $P(zero)$
+        \item for every $a$, if $\mathcal{P}(a)$, then $\mathcal{P}(succ(a))$.
+\end{enumerate}
+The sufficiency of these conditions is the familiar principle of \textit{mathematical induction}
+
+\section{Hypothetical Judgements}
+A \textit{hypothetical judgment} expresses an entailment between one or more
+hypotheses and a conclusion. We will consider two notions of entailment, called
+\textit{derivability} and \textit{admissibility}. Both express a form of
+entailment, but they differ in that derivability is stable under extension with
+new rules, admissibility is not. A \textit{general judgment} expresses
+the universality, or genericity, of a judgment. There are two forms of general
+judgment, the \textit{generic} and the \textit{parametric}. The generic judgment
+expresses generality with respect to all substitution instances for variables in
+a judgment. The parametric judgment expresses generality with respect to
+renamings of symbols.
+
+The hypothetical judgment codifies the rules for expressing the validity of a
+conclusion conditional on the validity of one or more hypotheses. There are two
+forms of hypothetical judgment that differ according to the sense in which the
+conclusion is conditional on the hypotheses. One is stable under extension with
+more rules, and the other is not.
+
+\subsection{Derivability}
+For a given set $\mathcal{R}$ of rules, we define the \textit{derivability}
+judgement, written $J_1,\ldots,J_k \vdash_\mathcal{R} K$, where each $J_i$ and $K$
+are basic judgements, to mean that we may derive $K$ from the \textit{expansion}
+of the rules $\mathcal{R}$ with the axioms
+
+\begin{mathpar}
+            \inferrule{~} {J_1} \quad
+            \ldots \quad
+            \inferrule{~} {J_k} \quad
+\end{mathpar}
+
+We treat the \textit{hypotheses}, or \textit{antecedents}, of the judgment $J_1,
+\ldots, J_k$ as “temporary axioms,” and derive the conclusion, or consequent, by
+composing rules in $\mathcal{R}$. Thus, evidence for a hypothetical judgment
+consists of a derivation of the conclusion from the
+hypotheses using the rules in $\mathcal{R}$.
+We use capital Greek letters, usually $\Gamma$ or $\Delta$, to stand for a
+finite set of basic judgments, and write $\mathcal{R} \bigcup \Gamma$ for the
+expansion of $\mathcal{R}$ with an axiom corresponding to each judgment in
+$\Gamma$.The judgment $\Gamma \vdash_\mathcal{R} K$ means that $K$ is
+derivable from rules $\mathcal{R} \bigcup \Gamma$, and the judgment
+$\vdash_\mathcal{R} \Gamma$ means that $\vdash_\mathcal{R} J$ for each in
+$\Gamma$. An equivalent way of defining $J_1, \ldots, J_n \vdash_\mathcal{R} J$ is
+to say that the rule
+\begin{mathpar}
+    \inferrule{J_1 \quad \ldots \quad J_n} {J}
+\end{mathpar}
+
+is \textit{derivable} from $mathcal{R}$, which means that there is a derivation
+of $J$ composed of the rules in $\mathcal{R}$ augmented by treating $J_1, \ldots,
+J_n$ as axioms.
+
+For example, consider the derivability judgment.
+\begin{displaymath}
+    a \ nat \vdash succ(succ(a)) nat
+\end{displaymath}
+This judgement is valid for any choice of object $a$, as shown by the derivation
+
+\begin{mathpar}
+    \inferrule* 
+        {\inferrule* 
+            {\inferrule* {~} {a \ nat}}
+            {succ~(a)}}
+        {succ~(succ~(a))}
+\end{mathpar}
+
+which composes rules~??, starting with $a \ nat$ as an axiom, and ending with
+$succ~(succ~(a)) nat$.
+
+It follows directly from the definition of derivability that it is stable under
+extension with new rules.
+
+\begin{theorem}[Stability]
+    If $\Gamma \vdash_\mathcal{R} J$, then $\Gamma \vdash_{\mathcal{R} \cup \mathcal{R'}} J$
+\end{theorem}
+
+\begin{proof}
+    Any derivation of $J$ from $\mathcal{R} \bigcup \Gamma$ is also a derivation
+    from $(\mathcal{R} \cup \mathcal{R'})\cup \Gamma$, because any rule in
+    $\mathcal{R}$ is also a rule in $\mathcal{R} \cup \mathcal{R'}$.
+\end{proof}
+Derivability enjoys a number of structural properties that follow from its definition, independently of the rules $\mathcal{R}$ in question.
+
+\begin{property}[Reflexivity]
+    Every judgment is a consequence of itself:$\Gamma, J \vdash_\mathcal{R} J$.Each hypothesis justifies itself as conclusion.
+\end{property}
+
+\begin{property}[Weakening]
+  If $\Gamma \vdash_\mathcal{R} J$,then $\Gamma, K \vdash_\mathcal{R} J$.Entailment  is  not  influenced  by  un-exercised options.
+\end{property}
+
+\begin{property}[Transitivity]
+  If $\Gamma, K \vdash_\mathcal{R} J$ and $\Gamma \vdash_\mathcal{R} K$, then
+  $\Gamma \vdash_\mathcal{R} J$. If we replace an axiom  by a derivation of it,
+  the result is a derivation of its consequent without that  hypothesis
+\end{property}
+
+Reflexivity follows directly from the meaning of derivability. Weakening follows directly
+from the definition of derivability. Transitivity is proved by rule induction on the first
+premise
+
+\section{Statics}
+Most programming languages exhibit a \textit{phase distinction} between the
+static and dynamic phases of processing. The static phase consists of parsing
+and type checking to ensure that the program is well-formed; the dynamic phase
+consists of execution of well-formed programs. A language is said to be
+\textit{safe} exactly when well-formed programs are well-behaved when executed.
+
+The static phase is specified by a \textit{statics} comprising a set of rules
+for deriving \textit{typing judgments} stating that an expression is well-formed
+of a certain type. Types mediate the interaction between the constituent parts
+of a program by “predicting” some aspects of the execution behavior of the parts
+so that we may ensure they fit together properly at run-time. Type safety tells
+us that these predictions are correct; if not, the statics is considered to be
+improperly defined, and the language is deemed \textit{unsafe} for execution.
+
+\subsection{Syntax}
+When defining a language we shall be primarily concerned with its abstract syntax,
+specified by a collection of operators and their arities. The abstract syntax
+provides a systematic, unambiguous account of the hierarchical and binding
+structure of the language and is considered the official presentation of the language.
+However, for the sake of clarity, it is also useful to specify minimal concrete syntax
+conventions, without going through the trouble to set up a fully precise grammar for
+it.
+We will accomplish both of these purposes with a \textit{syntax chart}, whose meaning is
+best illustrated by example. The following chart summarizes the abstract and concrete
+syntax of.
+
+\begin{tabular}{ccccc}
+    $\mathbf{Typ} \ \tau$&~::= & $\mathbf{num}$ & $\mathbf{num}$ & numbers\\ 
+    &  & $\mathbf{str}$ & $\mathbf{str}$ & strings\\ 
+    $\mathbf{Exp} \ e$ &~::= & $x$ & $x$ & variable\\ 
+    &  & $\mathbf{num}$[n] & n & numeral \\ 
+    &  & $\mathbf{str}$[s] & ``s'' & literal\\ 
+    &  & $\mathbf{plus}(e_1;e_2)$ & $e_1+e_2$ & addition\\ 
+    &  & $\mathbf{times}(e_1;e_2$) & $e_1*e_2$ & multiplication\\ 
+    &  & $\mathbf{cat}(e_1;e_2)$ & $e_1$\textasciicircum$ e_2$ & concatenation\\ 
+    &  & $\mathbf{len}(e$) & $|e|$ & length\\ 
+    &  & $\mathbf{let}(e_1;x.e_2$) & $\mathbf{let} \ x \ \mathbf{be}\  e_1 \textbf{in} \ e_2$ & definition\\ 
+\end{tabular} \\
+
+
+This chart defines two sorts,$\mathbf{Typ}$, ranged over by $\tau$, and
+$\mathbf{Exp}$, ranged over by $e$. The chart defines a set of operators and
+their arities. For example, it specifies that the operator $\mathbf{let}$ has
+arity $\textbf{(Exp, Exp, Exp)}$, which specifies that it has two arguments of
+sort $\textbf{Exp}$, and binds a variable of sort $\mathbf{Exp}$ in the second
+argument.
+
+
+\subsection{Type System} The role of a type system is to impose constraints on
+the formations of phrases that are sensitive to the context in which they occur.
+For example, whether the expression $\mathbf{plus}(x;\mathbf{num}[n])$ is
+sensible depends on whether the variable $x$ is restricted to have type
+$\mathbf{num}$ in the surrounding context of the expression. This example is, in
+fact, illustrative of the general case, in that the only information required
+about the context of an expression is the type of the variables within whose
+scope the expression lies.  Consequently, the statics of $\mathbf{E}$ consists
+of an inductive definition of generic hypothetical judgments of the form
+\begin{center}
+    $\overrightarrow{x}|\Gamma \vdash e:\tau$
+\end{center}
+where $\overrightarrow{x}$ is a finite set of variables, and $\Gamma$ is a
+\textit{typing context} consisting of hypotheses of the form $x:\tau$, one for
+each $x\in\overrightarrow{x}$. We rely on typographical conventions to determine
+the set of variables, using the letters $x$ and $y$ to stand for them. We write
+$x \notin \mathit{dom}(\Gamma)$ to say that ther is no assumption in $\Gamma$ of
+the form $x:\tau$ for any type $\tau$, in which case we say that the variable
+$x$ is \textit{fresh} for $\Gamma$.
+
+The rules defining the statics of $\mathbf{E}$ are as follows:
+
+\begin{mathpar}
+    \inferrule{~}
+    {\Gamma, x:\tau~\vdash~x:\tau}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule{~}
+    {\Gamma~\vdash~\mathbf{str}[s]:\mathbf{str}}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule{~}
+    {\Gamma~\vdash~\mathbf{num}[n]:\mathbf{num}}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule{\Gamma~\vdash~e_1: \mathbf{num} \ \Gamma~\vdash~e_2: \mathbf{num}}
+    {\Gamma~\vdash~\mathbf{plus}~(e_1;e_2):\mathbf{num}}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule
+    {\Gamma \vdash e_1: \mathbf{num} \ \Gamma \vdash e_2: \mathbf{num}}
+    {\Gamma \vdash \mathbf{times}(e_1;e_2):\mathbf{num}}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule
+    {\Gamma \vdash e_1: \mathbf{str} \ \Gamma \vdash e_2: \mathbf{str}}
+    {\Gamma \vdash \mathbf{cat}(e_1;e_2):\mathbf{str}}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule
+    {\Gamma \vdash e: \mathbf{str}}
+    {\Gamma \vdash \mathbf{len}(e):\mathbf{str}}
+\end{mathpar}
+\begin{mathpar}
+    \inferrule
+    {\Gamma \vdash e_1: \tau_1 \ \Gamma, x:\tau_1 \vdash e_2: \tau_2}
+    {\Gamma \vdash \mathbf{let}(e_1;x.e_2):\tau_2}
+\end{mathpar}
+In rule~???, we tacitly assume that the variable $x$ is not already declared in
+$\Gamma$. This condition may always be met by choosing a suitable representative
+of the $\alpha$-equivalence class of the let expression.
+
+It is easy to check that every expression has at most one type by
+\textit{induction on typing}, which is rule induction applied to rules~??
+
 \section{Type Safety}
 FJ and FFJ are \textit{safe} (or, \textit{type safe}, or \textit{strongly
 typed}). Informally, this means that certain kinds of mismatches cannot
@@ -221,22 +512,7 @@ each other.
 
 For this we will need a nice understanding in logic and set theory.
 
-Com o advento da teoria das provas e da teoria de tipos\cite{martinlof},
-ferramentas robustas para prova de corretude de linguagens de computação vêm
-sendo introduzidas e melhoradas nas últimas décadas. Entre eles podemos citar
-SAT solvers, Provadores de teoremas automatizados e provadores de teoremas
-assistidos.  Neste artigo estamos interessados em provadores de teoremas
-assistidos, mais especificamente Coq, como ferramenta de auxílio na formalização
-da nossa implementação da linguagem \textit{Feature Featherweigth Java} (FFJ),
-introduzida nas seções seguintes. 
 
-A formalização pode oferecer impulsos significativos no processo de abstração de
-um artefato do mundo real, como, por exemplo, a abstração representada por
-linguagens de programação.  Um modelo formal pode ser usado para descrever
-alguns aspectos precisos do projeto, para definir e provar suas propriedades,
-além de direcionar o foco a questões que poderiam vir a ser negligenciadas.
-Estes são alguns dos objetivos que buscamos ao recorrer à formalização de nossa
-implementação.
 
 \section{Featherweight Java}
 
