@@ -178,7 +178,7 @@
 %%       Desenvolvimento      \chapter{Nome do capitulo} \section{Nome da secao} ...
 %%       Conclusão            \chapter{Conclus\~ao} ...
 %%    Elementos pós-textuais  \postextual
-%%       Referências          \bibliographystyle{...} \bibliography %usar BibTeX
+%%       References          \bibliographystyle{...} \bibliography %usar BibTeX
 %%       Glossário            \printglossary %usando pacote {glossaries}
 %%       Apêndices            \apendices \chapter{Nome do apendice} ...
 %%       Anexos               \anexos \chapter{Nome do anexo} ...
@@ -620,7 +620,7 @@
 \renewcommand{\bibliography}[1]{%
 	%renomeia a seção após influência maligna do Babel
 	\renewcommand*{\bibname}
-		{\@ifundefined{XeTeXversion}{Refer\^encias}{Referências}}
+		{\@ifundefined{XeTeXversion}{References}{References}}
 	\addtocchapter{\bibname}
 	\singlespacing\@bibliography{#1}\defaultspacing}
 

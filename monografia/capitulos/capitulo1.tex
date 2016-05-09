@@ -598,6 +598,9 @@ and \texttt{g} range over field names; \texttt{m} ranges over method names;
 expressions; \texttt{L} ranges over class declarations; \texttt{K} range over
 constructor declarations and \texttt{M} ranges over method declarations.
 
+The abstract syntax of FJ class declarations, constructor declarations, method
+declarations and expressions is given at Table~\ref{abstractsyntax}.
+
 %\begin{center}
 \begin{table}[h!]
 \begin{tabular}{ccl}
@@ -614,9 +617,31 @@ $e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
 \end{tabular} \\
 \vspace{1.5mm}
 \caption{Abstract Syntax}
-\label{definition:abstractsyntax}
+\label{abstractsyntax}
 \end{table}
 %\end{center}
+
+The variable \texttt{this} is assumed to be included in the set of variables, but
+it cannot be used as the name of an argument to a method. This detail will be
+important when we discuss the implementation details.
+%The evaluation rule for method invocation will have the job of substituing an
+%appropriate object for \texttt{this}, in addition to substituting the argument
+%values for the parameters.
+
+It is written $\overline{f}$ as a shorthand for a possibly empty sequence
+$f_{1},\ldots,f_{n}$~(and similary for $\overline{C},\ \overline{x},\
+\overline{e}$ etc.) and $\overline{M}$ as a shorthand for
+$M_{1}\ldots M_{n}$~(with no commas).
+
+A class table CT is a mapping from class names \texttt{C} to class declarations
+\texttt{L}. A program is a pair (CT, \texttt{e}) of a class table and an
+expression. In FJ, every class has a superclass declared with extends, with
+the exception of \texttt{Object}, which is taken as a distinguished class name
+whose definition does \textit{not} appear in the class table. The class table
+contains the subtype relation between all the classes. From the
+Table~\ref{subtyping}, one can infer that subtyping is the reflexive and
+transitive closure of the immediate subclass ralation given by the
+\texttt{extends} clauses in CT\@. 
 
 \begin{table}[h!]
 	\centering
@@ -632,6 +657,11 @@ $e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
 \label{subtyping}
 \end{table}
 
+The function $fields$ defined at Table~\ref{fieldlookup} returns a list of all
+the fields declared at the current class definition, as well as the fields
+declared at the superclass of it. It returns an empty list in the case of
+\texttt{Object}.
+
 \begin{table}[h!]
 	\centering
 	\def\arraystretch{2.5}
@@ -645,6 +675,13 @@ $e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
 \caption{Field lookup}
 \label{fieldlookup}
 \end{table}
+
+The method declaration $D\ m~(\overline{C}\ \overline{x})\ \{return\ e;\}$
+introduces a method name \texttt{m} with result type D and parameters
+$\overline{x}$ of types $\overline{C}$. The body of the method is the single
+statement \texttt{return e;}. The variables $\overline{x}$ and the special
+variable \texttt{this} are bound in \texttt{e}. The rules that define these
+functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 
 \begin{table}[h!]
 	\centering
@@ -681,8 +718,35 @@ $e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
 \label{mbodylookup}
 \end{table}
 
+The given class table is assumed to satisfy some conditions:
+\begin{itemize}
+	\item $ CT~(C)=class\ C\ldots$ for every $C\in dom(CT)$
+	\item \texttt{Object}$\notin dom(CT)$
+	\item for every class name $C$~(except \texttt{Object}) appearing anywhere
+		in CT, we have $C\in dom(CT)$
+	\item there are no cycles in the subtype relation induced by CT, i.e., the
+		relation <: is antisymmetric
+\end{itemize}
+
 \subsection{Typing}
 
+\begin{table}[h!]
+	\centering
+	\def\arraystretch{3}
+	\begin{tabular}{cr}
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad B\ m~(\overline{B}\ \overline{x})\{return\
+	e;\}\in~\overline{M}}
+	{mbody~(m,~C)=\overline{x}.e} & (T-Var)\\
+
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad m\notin~\overline{M}}
+		{mbody~(m,~C)=mbody~(m,~D)} & (T-Field)\\
+	\end{tabular}
+\vspace{1.5mm}
+\caption{Expression typing}
+\label{exptyping}
+\end{table}
 \section{Feature Featherweight Java}
 
 This language extends FJ with constructions of \textit{feature-oriented
