@@ -14,9 +14,21 @@ the language is on writing statically typed programs~\cite{rwhaskell}.
 \textit{Converter} (BNFC) is a tool developded to help the design and
 implementation of a new programming language~\cite{bnfcsite}. 
 It uses the grammar formalism named \textit{Labelled BNF} (LBNF) defined
-in~\cite{bnfc}. Given a grammar writtenin LBNF, the BNFC produces a comlete
+in~\cite{bnfc}. Given a grammar written in LBNF, the BNFC produces a complete
 compiler front end (with no type checking), i.e. a lexer, a parser, and an
-abstract syntax definition.
+abstract syntax definition. Moreover, it also provides a pretty-printer and a
+language specification \LaTeX as well as a template file for the compiler back
+end. Since LBNF is purely declarative, these files can be generated in any
+programming language that supports appropriate compiler front-end tools, in
+particular, Haskell.
+
+\subsection{Basic LBNF}
+
+\begin{verbatim}
+EPlus. Exp ::= Exp "+" Num ;
+ENum. Exp ::= Num ;
+NOne. Num ::= 1 ;
+\end{verbatim}
 
 \section{Monads}
 
