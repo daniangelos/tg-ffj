@@ -2,7 +2,7 @@
 
 The main goal of this work is to develop an interpreter for Feature
 Featherweight Java, in the future it will be provided a formal proof of its
-soundnes in Coq.
+soundness in Coq.
 
 But before delving through the definition of FFJ we will first provide
 important formal definition to better understand the motivation of our work.
@@ -589,6 +589,31 @@ new Pair(new A(), new B()).setfst(new B())
 
 \subsection{Syntax}
 
+To present the abstract syntax of FJ, first we need to define the meaning of the
+following metavariables, which will apear frequently in the rules of FJ's
+grammar: \texttt{A, B, C, D} and \texttt{E} range over class names; \texttt{f}
+and \texttt{g} range over field names; \texttt{m} ranges over method names;
+\texttt{x} ranges over variables; \texttt{d} and \texttt{e} range over
+expressions; \texttt{L} ranges over class declarations; \texttt{K} range over
+constructor declarations and \texttt{M} ranges over method declarations.
+
+%\begin{center}
+\begin{table}[h!]
+    \caption{Abstract Syntax}
+    \vspace{0.8mm}
+\begin{tabular}{ccl}
+    $L$&~::= & $class~C~extends~C~{\overline{C}~\overline{f};~K~\overline{M}}$\\ 
+    \vspace{0.8mm}
+    $K$&~::= &
+$C~(\overline{C}~\overline{f})~{super~(\overline{f});~this.\overline{f}=\overline{f};}$\\
+    \vspace{0.8mm}
+$M$&~::= & $C~m~(\overline{C}~\overline{x})~{return~e;}$\\
+    \vspace{0.8mm}
+$e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
+\end{tabular} \\
+\label{definition:abstractsyntax}
+\end{table}
+%\end{center}
 
 
 \subsection{Typing}
