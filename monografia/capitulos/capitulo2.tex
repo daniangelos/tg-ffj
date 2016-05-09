@@ -2,6 +2,13 @@
 
 \section{Why Haskell?}
 
+Haskell is a general purpose programming language. It wasdesigned without any
+application niche in mind, i.e., it does not favour one problem domain over
+others. While at its core, Haskell encourages, as a default, a pure, lazy style of
+functional programming, but it's not the only option. It also supports the more
+traditional models of procedural code code and strict evaluation. The focus of
+the language is on writing statically typed programs~\cite{rwhaskell}. 
+
 \section{BNFC}
 \textit{Backus-Naur Form}, also know as Context-Free Grammars,
 \textit{Converter} (BNFC) is a tool developded to help the design and
@@ -12,6 +19,28 @@ compiler front end (with no type checking), i.e. a lexer, a parser, and an
 abstract syntax definition.
 
 \section{Monads}
+
+The functional programming community divides into two camps~\cite{monadswadler}.
+\textit{Pure} languages, such as Haskell, are lambda calculus pure and simple.
+\textit{Impure} languages extends lambda calculus with a number of possible
+effects. Pure languages are easier to reason about and may benefit from lazy
+evaluation, while the impure ones offer efficiency benefits and sometimes make
+possible a more compact mode of expression. 
+
+It has been discussed the difficulties of implementing a evaluator in a pure
+functional language, it basically envolves:
+\begin{itemize}
+\item To add error handling to it, it is necessary to modify each recursive call to
+check for and handle errors appropriately, a work easily done with exceptions in
+an impure language
+\item To add a count of operations performed, we must modify each
+recursive call to pass around such counts appropriately, this would be easily
+done in an impure language using global variables
+\item To add an execution trace to it, we need to modify each recursive call to
+pass aroung such traces, also easily done in an impure language
+\end{itemize}
+
+The solution: \textit{monad}.
 
 \section{Coq} 
 Coq is a formal proof management system based on the Calculus of Inductive
