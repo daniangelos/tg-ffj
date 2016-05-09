@@ -600,22 +600,86 @@ constructor declarations and \texttt{M} ranges over method declarations.
 
 %\begin{center}
 \begin{table}[h!]
-    \vspace{0.8mm}
 \begin{tabular}{ccl}
-    $L$&~::= & $class~C~extends~C~{\overline{C}~\overline{f};~K~\overline{M}}$\\ 
+    $L$&~::= & $class\ C~extends~C\ \{\overline{C} \ \overline{f};\ K\
+\overline{M}\}$\\ 
     \vspace{0.8mm}
     $K$&~::= &
-$C~(\overline{C}~\overline{f})~{super~(\overline{f});~this.\overline{f}=\overline{f};}$\\
+$C~(\overline{C}~\overline{f})\
+\{super~(\overline{f});~this.\overline{f}=\overline{f};\}$\\
     \vspace{0.8mm}
-$M$&~::= & $C~m~(\overline{C}~\overline{x})~{return~e;}$\\
+$M$&~::= & $C~m~(\overline{C}~\overline{x})\ \{return~e;\}$\\
     \vspace{0.8mm}
 $e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
 \end{tabular} \\
-    \caption{Abstract Syntax}
-    \label{definition:abstractsyntax}
+\vspace{1.5mm}
+\caption{Abstract Syntax}
+\label{definition:abstractsyntax}
 \end{table}
 %\end{center}
 
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{c@{\hskip 1in}c@{\hskip 1in}c}
+		$C~<:~C$ & 
+		\inferrule{C <: D \qquad C <: E}
+		{C <: E} &
+		\inferrule{class~C~extends~D~\{~\ldots~\}}
+		{C~<:~E} 
+	\end{tabular}
+\vspace{1.5mm}
+\caption{Subtyping}
+\label{subtyping}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\def\arraystretch{2.5}
+	\begin{tabular}{c}
+		$fields~($\texttt{Object}$)=\bullet$ \\
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad fields~(D)=\overline{D}\ \overline{g}}
+		{fields~(C)=\overline{D}\ \overline{g},\ \overline{C}\ \overline{f}}
+	\end{tabular}
+\vspace{1.5mm}
+\caption{Field lookup}
+\label{fieldlookup}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\def\arraystretch{3}
+	\begin{tabular}{c}
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad B\ m~(\overline{B}\ \overline{x})\{return\
+	e;\}\in~\overline{M}} {mtype~(m,~C)=\overline{B}\rightarrow~B} \\
+
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad m\notin~\overline{M}}
+		{mtype~(m,~C)=mtype~(m,~D)} \\
+	\end{tabular}
+\vspace{1.5mm}
+\caption{Method type lookup}
+\label{mtypelookup}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\def\arraystretch{3}
+	\begin{tabular}{c}
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad B\ m~(\overline{B}\ \overline{x})\{return\
+	e;\}\in~\overline{M}}
+		{mbody~(m,~C)=\overline{x}.e} \\
+
+		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
+		\overline{M}\} \qquad m\notin~\overline{M}}
+		{mbody~(m,~C)=mbody~(m,~D)} \\
+	\end{tabular}
+\vspace{1.5mm}
+\caption{Method body lookup}
+\label{mbodylookup}
+\end{table}
 
 \subsection{Typing}
 
