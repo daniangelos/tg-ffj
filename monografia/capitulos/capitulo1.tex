@@ -765,9 +765,9 @@ the environment $\Gamma$, expression $e$ has type $C$''.
 		\inferrule{\Gamma \vdash e_{0}:D\qquad C~<:~D \qquad C \neq D}
 		{\Gamma \vdash (C)~e_{0}:C} & (T-DCast)\\
 
-		\inferrule{\Gamma \vdash e_{0}:D\qquad C~\not{<:}~D \qquad D~\not{<:}~C 
+		\inferrule{\Gamma \vdash e_{0}:D\qquad C~\nless :~D \qquad D~\nless:~C 
 		\qquad stupid\ warning}
-		{\Gamma \vdash (C)~e_{0}:C} & (T-SCast)\\
+		{\Gamma \vdash (C)~e_0:C} & (T-SCast)\\
 
 	\end{tabular}
 \vspace{1.5mm}
