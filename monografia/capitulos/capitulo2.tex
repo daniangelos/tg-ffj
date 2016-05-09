@@ -24,10 +24,26 @@ particular, Haskell.
 
 \subsection{Basic LBNF}
 
+Briefly, an LBNF grammar is a context-free grammar where every rule is given a
+label. The label is used for constructing a syntax tree whose subtrees are given
+by the nonterminals of the rule, in the same order.
+
+As an example of LBNF, consider a triple of rules defining addition expressions
+with ``1''.
+
 \begin{verbatim}
 EPlus. Exp ::= Exp "+" Num ;
 ENum. Exp ::= Num ;
 NOne. Num ::= 1 ;
+\end{verbatim}
+
+From an LBNF grammar, the BNFC extracts an abstract syntax and a concrete
+syntax. In Haskell, for instance, the abstract syntax is implemented asa system
+of datatype definitions.
+
+\begin{verbatim}
+data Exp = EPlus Exp Exp | ENUm Num
+data Num = NOne
 \end{verbatim}
 
 \section{Monads}
