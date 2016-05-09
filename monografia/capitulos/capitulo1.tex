@@ -423,7 +423,7 @@ $x$ is \textit{fresh} for $\Gamma$.
 The rules defining the statics of $\mathbf{E}$ are as follows:
 
 \begin{mathpar}
-    \inferrule{~}
+	\inferrule*[Right=e\_var]{~}
     {\Gamma, x:\tau~\vdash~x:\tau}
 \end{mathpar}
 \begin{mathpar}
@@ -434,36 +434,42 @@ The rules defining the statics of $\mathbf{E}$ are as follows:
     \inferrule{~}
     {\Gamma~\vdash~\mathbf{num}[n]:\mathbf{num}}
 \end{mathpar}
+
 \begin{mathpar}
     \inferrule{\Gamma~\vdash~e_1: \mathbf{num} \ \Gamma~\vdash~e_2: \mathbf{num}}
     {\Gamma~\vdash~\mathbf{plus}~(e_1;e_2):\mathbf{num}}
 \end{mathpar}
+
 \begin{mathpar}
     \inferrule
     {\Gamma \vdash e_1: \mathbf{num} \ \Gamma \vdash e_2: \mathbf{num}}
     {\Gamma \vdash \mathbf{times}(e_1;e_2):\mathbf{num}}
 \end{mathpar}
+
 \begin{mathpar}
     \inferrule
     {\Gamma \vdash e_1: \mathbf{str} \ \Gamma \vdash e_2: \mathbf{str}}
     {\Gamma \vdash \mathbf{cat}(e_1;e_2):\mathbf{str}}
 \end{mathpar}
+
 \begin{mathpar}
     \inferrule
     {\Gamma \vdash e: \mathbf{str}}
     {\Gamma \vdash \mathbf{len}(e):\mathbf{str}}
 \end{mathpar}
+
 \begin{mathpar}
     \inferrule
     {\Gamma \vdash e_1: \tau_1 \ \Gamma, x:\tau_1 \vdash e_2: \tau_2}
     {\Gamma \vdash \mathbf{let}(e_1;x.e_2):\tau_2}
 \end{mathpar}
-In rule~???, we tacitly assume that the variable $x$ is not already declared in
+
+In rule \texttt{E\_VAR}, we tacitly assume that the variable $x$ is not already declared in
 $\Gamma$. This condition may always be met by choosing a suitable representative
 of the $\alpha$-equivalence class of the let expression.
 
 It is easy to check that every expression has at most one type by
-\textit{induction on typing}, which is rule induction applied to rules~??
+\textit{induction on typing}, which is rule induction applied to rules. %??
 
 \section{Type Safety}
 FJ and FFJ are \textit{safe} (or, \textit{type safe}, or \textit{strongly
@@ -563,7 +569,7 @@ In FJ, a program consists of a collection of class definitions, later on defined
 as the class table, and an expression to be evaluated. Here is an example of some typical
 class definitions in FJ and a possible expression for this definitions.
 
-\begin{verbatim} 
+\begin{lstlisting}[language=Java]
 class A extends Object {
     A() { super(); } 
 } 
@@ -584,9 +590,8 @@ class Pair extends Object {
         return new Pair(newfst, this.snd); 
     } 
 } 
-
 new Pair(new A(), new B()).setfst(new B())
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Syntax}
 
@@ -604,16 +609,16 @@ declarations and expressions is given at Table~\ref{abstractsyntax}.
 %\begin{center}
 \begin{table}[h!]
 \begin{tabular}{ccl}
-    $L$&~::= & $class\ C~extends~C\ \{\overline{C} \ \overline{f};\ K\
-\overline{M}\}$\\ 
+    $L$&~::= & $class\ C~extends~C\ \{\bar{C} \ \bar{f};\ K\
+\bar{M}\}$\\ 
     \vspace{0.8mm}
     $K$&~::= &
-$C~(\overline{C}~\overline{f})\
-\{super~(\overline{f});~this.\overline{f}=\overline{f};\}$\\
+$C~(\bar{C}~\bar{f})\
+\{super~(\bar{f});~this.\bar{f}=\bar{f};\}$\\
     \vspace{0.8mm}
-$M$&~::= & $C~m~(\overline{C}~\overline{x})\ \{return~e;\}$\\
+$M$&~::= & $C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
     \vspace{0.8mm}
-$e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
+$e$&~::= & $x~|~e.f~|~e.m~(\bar{e})~|~new~C~(\bar{e})~|~(C)~e$ \\
 \end{tabular} \\
 \vspace{1.5mm}
 \caption{Abstract Syntax}
@@ -628,9 +633,9 @@ important when we discuss the implementation details.
 %appropriate object for \texttt{this}, in addition to substituting the argument
 %values for the parameters.
 
-It is written $\overline{f}$ as a shorthand for a possibly empty sequence
-$f_{1},\ldots,f_{n}$~(and similary for $\overline{C},\ \overline{x},\
-\overline{e}$ etc.) and $\overline{M}$ as a shorthand for
+It is written $\bar{f}$ as a shorthand for a possibly empty sequence
+$f_{1},\ldots,f_{n}$~(and similary for $\bar{C},\ \bar{x},\
+\bar{e}$ etc.) and $\bar{M}$ as a shorthand for
 $M_{1}\ldots M_{n}$~(with no commas).
 
 A class table CT is a mapping from class names \texttt{C} to class declarations
@@ -667,19 +672,19 @@ declared at the superclass of it. It returns an empty list in the case of
 	\def\arraystretch{2.5}
 	\begin{tabular}{c}
 		$fields~($\texttt{Object}$)=\bullet$ \\
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad fields~(D)=\overline{D}\ \overline{g}}
-		{fields~(C)=\overline{D}\ \overline{g},\ \overline{C}\ \overline{f}}
+		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
+		\bar{M}\} \qquad fields~(D)=\bar{D}\ \bar{g}}
+		{fields~(C)=\bar{D}\ \bar{g},\ \bar{C}\ \bar{f}}
 	\end{tabular}
 \vspace{1.5mm}
 \caption{Field lookup}
 \label{fieldlookup}
 \end{table}
 
-The method declaration $D\ m~(\overline{C}\ \overline{x})\ \{return\ e;\}$
+The method declaration $D\ m~(\bar{C}\ \bar{x})\ \{return\ e;\}$
 introduces a method name \texttt{m} with result type D and parameters
-$\overline{x}$ of types $\overline{C}$. The body of the method is the single
-statement \texttt{return e;}. The variables $\overline{x}$ and the special
+$\bar{x}$ of types $\bar{C}$. The body of the method is the single
+statement \texttt{return e;}. The variables $\bar{x}$ and the special
 variable \texttt{this} are bound in \texttt{e}. The rules that define these
 functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 
@@ -687,12 +692,12 @@ functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 	\centering
 	\def\arraystretch{3}
 	\begin{tabular}{c}
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad B\ m~(\overline{B}\ \overline{x})\{return\
-	e;\}\in~\overline{M}} {mtype~(m,~C)=\overline{B}\rightarrow~B} \\
+		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
+		\bar{M}\} \qquad B\ m~(\bar{B}\ \bar{x})\{return\
+	e;\}\in~\bar{M}} {mtype~(m,~C)=\bar{B}\rightarrow~B} \\
 
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad m\notin~\overline{M}}
+		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
+		\bar{M}\} \qquad m\notin~\bar{M}}
 		{mtype~(m,~C)=mtype~(m,~D)} \\
 	\end{tabular}
 \vspace{1.5mm}
@@ -704,13 +709,13 @@ functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 	\centering
 	\def\arraystretch{3}
 	\begin{tabular}{c}
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad B\ m~(\overline{B}\ \overline{x})\{return\
-	e;\}\in~\overline{M}}
-		{mbody~(m,~C)=\overline{x}.e} \\
+		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
+		\bar{M}\} \qquad B\ m~(\bar{B}\ \bar{x})\{return\
+	e;\}\in~\bar{M}}
+		{mbody~(m,~C)=\bar{x}.e} \\
 
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad m\notin~\overline{M}}
+		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
+		\bar{M}\} \qquad m\notin~\bar{M}}
 		{mbody~(m,~C)=mbody~(m,~D)} \\
 	\end{tabular}
 \vspace{1.5mm}
@@ -730,18 +735,40 @@ The given class table is assumed to satisfy some conditions:
 
 \subsection{Typing}
 
+The typing rules for expressions are in Table~\ref{exptyping}. An environment
+$\Gamma$ is a finite mapping from variables to types, written $\bar{c}:\bar{C}$.
+The typing judgment for expressions has the form $\Gamma \vdash e: C$, read ``in
+the environment $\Gamma$, expression $e$ has type $C$''.
+
 \begin{table}[h!]
 	\centering
 	\def\arraystretch{3}
 	\begin{tabular}{cr}
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad B\ m~(\overline{B}\ \overline{x})\{return\
-	e;\}\in~\overline{M}}
-	{mbody~(m,~C)=\overline{x}.e} & (T-Var)\\
+		$\Gamma \vdash x:\Gamma(x)$& (T-Var)\\
 
-		\inferrule{class\ C\ extends\ D~\{\overline{C}\ \overline{f};\ K\
-		\overline{M}\} \qquad m\notin~\overline{M}}
-		{mbody~(m,~C)=mbody~(m,~D)} & (T-Field)\\
+		\inferrule{\Gamma \vdash e_{0}:C_{0}\qquad fields~(C_{0})=\bar{C}\
+		\bar{f}}
+		{\Gamma \vdash e_{0}.f_{i}:C_{i}} & (T-Field)\\
+
+		\inferrule{\Gamma \vdash e_{0}:C_{0}\qquad
+			mtypes~(m,~C_{0})=\bar{D}\rightarrow C\qquad \Gamma \vdash
+		\bar{e} : \bar{C} \qquad \bar{C}~<:~\bar{D}}
+		{\Gamma \vdash e_{0}.m(\bar{e}):C} & (T-Invk)\\
+
+		\inferrule{fields(C)=\bar{D}\ \bar{f}\qquad \Gamma \vdash
+		\bar{e}:\bar{C} \qquad \bar{C}~<:~\bar{D}}
+		{\Gamma \vdash new\ C(\bar{e}):C} & (T-New)\\
+
+		\inferrule{\Gamma \vdash e_{0}:D \qquad D~<:~C}
+		{\Gamma \vdash (C)~e_{0}: C} & (T-UCast)\\
+
+		\inferrule{\Gamma \vdash e_{0}:D\qquad C~<:~D \qquad C \neq D}
+		{\Gamma \vdash (C)~e_{0}:C} & (T-DCast)\\
+
+		\inferrule{\Gamma \vdash e_{0}:D\qquad C~\not{<:}~D \qquad D~\not{<:}~C 
+		\qquad stupid\ warning}
+		{\Gamma \vdash (C)~e_{0}:C} & (T-SCast)\\
+
 	\end{tabular}
 \vspace{1.5mm}
 \caption{Expression typing}
@@ -751,7 +778,8 @@ The given class table is assumed to satisfy some conditions:
 
 This language extends FJ with constructions of \textit{feature-oriented
 programming} (FOP) by new languages constructs for feature composition,
-according evaluation and type rules.
+according evaluation and type rules. FFJ was proposed by Apel et.~al., in
+\cite{fop}.
 
 %FFJ extende FJ com novas construções de linguagem orientados a composição de
 %\textit{features}\cite{fop}, avaliação de acordos e regras de
