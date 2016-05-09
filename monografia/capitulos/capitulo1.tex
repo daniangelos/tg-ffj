@@ -103,6 +103,7 @@ determine its meaning.
 As examples of \textit{judgements} we have:
 
 \begin{table}[h!]
+    \centering
     \begin{tabular}{cc}
         $n$ nat & $n$ is a natural number \\
         $n$ = $n_1$ + $n_2$ & $n$ is the sum of $n_1$ and $n_2$\\
@@ -110,7 +111,7 @@ As examples of \textit{judgements} we have:
         e~: t & expression e has type t\\
         e $ \Downarrow $ v & expression e has type v
     \end{tabular}
-    \caption{}
+    \caption{Judgements Example}
 \end{table}
 
 A judgment states that one or more abstract binding trees have a property
@@ -599,7 +600,6 @@ constructor declarations and \texttt{M} ranges over method declarations.
 
 %\begin{center}
 \begin{table}[h!]
-    \caption{Abstract Syntax}
     \vspace{0.8mm}
 \begin{tabular}{ccl}
     $L$&~::= & $class~C~extends~C~{\overline{C}~\overline{f};~K~\overline{M}}$\\ 
@@ -611,7 +611,8 @@ $M$&~::= & $C~m~(\overline{C}~\overline{x})~{return~e;}$\\
     \vspace{0.8mm}
 $e$&~::= & $x~|~e.f~|~e.m~(\overline{e})~|~new~C~(\overline{e})~|~(C)~e$ \\
 \end{tabular} \\
-\label{definition:abstractsyntax}
+    \caption{Abstract Syntax}
+    \label{definition:abstractsyntax}
 \end{table}
 %\end{center}
 

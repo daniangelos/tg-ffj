@@ -804,7 +804,7 @@
                         \def\@nomeorientador{#2}%
                         \def\@filiorientador{#3}}
 
-\def\at@oriento#1#2{\def\@sexoorientador{Orientador}%
+\def\at@oriento#1#2{\def\@sexoorientador{Supervisor}%
                         \def\@nomeorientador{#1}%
                         \def\@filiorientador{#2}}
 
@@ -819,7 +819,7 @@
                         \def\@filicoorientador{#3}}%
                         %%%\@defsegundomembro{#2}{#3}}
 
-\def\at@cooriento#1#2{\def\@sexocoorientador{Coorientador}%
+\def\at@cooriento#1#2{\def\@sexocoorientador{Co-Supervisor}%
                         \def\@nomecoorientador{#1}%
                         \def\@filicoorientador{#2}}%
                         %%%\@defsegundomembro{#1}{#2}}
@@ -858,7 +858,7 @@
 \newenvironment{agradecimentos}
 	{\begin{paginatitulo}%
      	\pdfbookmark{Agradecimentos}{acknowledgements}%
-   		\chapter*{Agradecimentos}}%
+   		\chapter*{Acknowledgements}}%
 	{\end{paginatitulo}}
 
 \renewenvironment{abstract}
@@ -880,7 +880,7 @@
 \newenvironment{dedicatoria}
 	{\begin{paginatitulo}%
      	\pdfbookmark{Dedicat\'oria}{dedication}%
-   		\chapter*{Dedicat\'oria}}%
+   		\chapter*{Dedication}}%
 	{\end{paginatitulo}}
 
 \def\@printfulltitle{%
