@@ -97,6 +97,7 @@ As examples of \textit{judgements} we have:
 
 \begin{table}[h!]
     \centering
+    \caption{Judgements Example}
     \begin{tabular}{cc}
         $n$ nat & $n$ is a natural number \\
         $n$ = $n_1$ + $n_2$ & $n$ is the sum of $n_1$ and $n_2$\\
@@ -104,7 +105,6 @@ As examples of \textit{judgements} we have:
         e~: t & expression e has type t\\
         e $ \Downarrow $ v & expression e has type v
     \end{tabular}
-    \caption{Judgements Example}
 \end{table}
 
 A judgment states that one or more abstract binding trees have a property
@@ -146,7 +146,7 @@ or a is succ~(b) where b nat for some b. Taking these rules to be
 exhaustive, it follows that a nat iff a is a natural number.
 
 \section{Derivation}
-To show that an iductively defined judgement holds, it is enough to exhibit a
+To show that an inductively defined judgement holds, it is enough to exhibit a
 derivation of it. A derivation of a judgement is a finite composition of rules,
 starting with axioms and ending with that judgment. It may be thought of as a
 tree in which each node is a rule whose children are derivations of its
@@ -168,7 +168,7 @@ For example, this is a derivation of succ~(succ~(succ~(zero))) nat:
         {succ~(zero)}}
       {succ~(succ~(zero))}}
     {succ~(succ~(succ~(zero)))}
-\end{mathpar}~\ref{natrules}
+\end{mathpar}~
 
 To show that an inductively defined judgment is derivable, we need only find a
 derivation for it. There are two main methods for finding derivations, called
@@ -360,7 +360,7 @@ us that these predictions are correct; if not, the statics is considered to be
 improperly defined, and the language is deemed \textit{unsafe} for execution.
 
 \subsection{Syntax}
-When defining a language we shall be primarily concerned with its abstract syntax,
+When defining a language, we shall be primarily concerned with its abstract syntax,
 specified by a collection of operators and their arities. The abstract syntax
 provides a systematic, unambiguous account of the hierarchical and binding
 structure of the language and is considered the official presentation of the language.
@@ -518,7 +518,7 @@ For this we will need a nice understanding in logic and set theory.
 %Como FFJ é construída com base em \textit{Featherweight Java} (FJ),
 %introduziremos brevemente as principais características desta linguagem.
 The constructions of FFJ are based on the constructions of \textit{Featherweight
-Java} (FJ), therefore, we will briefly introduce the main characteristics of
+Java} (FJ), therefore, we must furst introduce the main characteristics of
 this language.
 
 \textit{Featherweight Java} was proposed by Igarash et.\ al., as a minimal core
@@ -533,59 +533,137 @@ forms of expression:
     \item variables
 \end{itemize}
 
-The purpose was to omit the maximum number of Java's characteristics while still
-maintain a the main core, to ease the formalization model.
-There is a direct correspondence between FJ and a purely functional core of
-Java, in the sense that every FJ program is literally an executable Java
-program.
+Several studies have introduced lightweight versions of Java
+The purpose is to omit the maximum number of Java's characteristics while
+still maintaining the main core, to ease the formalization model. There is a
+direct correspondence between FJ and a purely functional core of Java, in the
+sense that every FJ program is literally an executable Java program.
 
-%p: avoid using parenthesis, it is harder to understand 
-%p: maybe we should consider explaining this after the example, then we can
-%point to the constructor and everythings makes sense
-Notice that FJ doesn't even allow assignment as a form of expression.
-Assignment is used exclusively in field assignment inside the  constructors
-using \texttt{this}. Thus all fields and method parameters are implicity marked
-\texttt{final}. Therefore, FJ is restricted to a ``functional'' fragment of
-Java. The authors state that it is easy to encode the lambda calculus to FJ to
-prove that it is computationally complete.
+The design of FJ favors compactness over completeness almost obsessivelly.  The
+aim is to omit as many features as possible, even assignment, while retaining
+the core features of Java typing.  Assignment is used exclusively in field
+assignment inside the  constructors using \texttt{this}. 
 
+FJ is only a little larger than Church's lambda calculus~\cite{barendregt1984}
+or abadi and Cardelli's object calculus~\cite{abadi1996}, and is significantly
+smaller than other precious formal models of class-based languages. 
+Being smaller, FJ lets us focus on just a few key issues.
+
+FJ has been successfully used to study Java extentions because it is so
+compact, we can focus attention on essential aspectos of the extension.
+Moreover, because the proof of soundness for pure FJ is very simple, a rigorous
+soundness proof for even a significant extension may remain manageable.  The
+compactness of FJ is important because the soundness proof becomes very simple
+as the attention can be paid on essential aspects of the language, then a
+rigorous soundness proof for even a significant extension of FJ remains
+manageable. This is related to the authors's main goal: to make a proof of type
+soundness (``well-typed programs do not get stuck'') as concise as possible,
+while still capturing the essence of the soundness argument for the full Java
+language.
+
+The Java features omitted from FJ include assignment, interfaces, overloading,
+messages to \texttt{super}, \textit{null} pointers, base types (\texttt{int},
+\texttt{bool}, etc.), abstract method declarations, shadowing of superclass
+fields by subclass fields, access control (\texttt{public}, \texttt{private},
+etc.), and exceptions. The features of Java that it does model include mutually
+recursive class definitions, method recursion through \texttt{this}, subtyping,
+and casting.
+
+One key simplification in FJ is the omission of assignment. In essence, all
+fields and method parameters in FJ are implicitly marked \texttt{final}: it is
+assumed that an object's field are initialized by its constructor and never
+changed aftward. This restricts FJ to a ``functional'' fragment of Java, in
+which many common Java idioms, such as use of enumerations, cannot be
+represented. Nonetheless, this fragment is computationally complete (it is easy
+to encode the lambda calculus into it), and is large enough to include many
+useful programs like programs in Felleisen and Friedman's Java
+text~\cite{felleisen1998} which use a purely functional style. Moreover, most
+of the tricky typing issues in Java are independent of assignment. 
+
+\subsection{FJ explanation}
 %d: unecessary?
 %p: I think it is ok
-The compactness of FJ is important because the soundness proof becomes very
-simple as the attention can be paid on essential aspects of the language, then
-a rigorous soundness proof for even a significant extension of FJ remains
-manageable. This is related to the authors's main goal: to make a proof of type
-soundness (``well-typed programs do not get stuck'') as concise as possible, while
-still capturing the essence of the soundness argument for the full Java language.
-
-In FJ, a program consists of a collection of class definitions, later on defined
-as the class table, and an expression to be evaluated. Here is an example of some typical
-class definitions in FJ and a possible expression for this definitions.
+In FJ, a program consists of a collection of class definitions, later on
+defined as the class table, and an expression to be evaluated. This expression
+correspods to the body of the \texttt{main} method in full Java. Here is an
+example of some typical class definitions in FJ and a possible expression for
+this definitions.
 
 \begin{lstlisting}[language=Java]
-class A extends Object {
-    A() { super(); } 
-} 
-
-class B extends Object { 
-    B() { super(); }
-} 
-
-class Pair extends Object { 
-    Object fst; 
-    Object snd;
-    Pair(Object fst, Object snd) { 
-        super(); 
-        this.fst = fst; 
-        this.snd = snd; 
+    class A extends Object {
+        A() { super(); } 
     } 
-    Pair setfst(Object newfst) { 
-        return new Pair(newfst, this.snd); 
+
+    class B extends Object { 
+        B() { super(); }
     } 
-} 
-new Pair(new A(), new B()).setfst(new B())
+
+    class Pair extends Object { 
+        Object fst; 
+        Object snd;
+        Pair(Object fst, Object snd) { 
+            super(); 
+            this.fst = fst; 
+            this.snd = snd; 
+        } 
+        Pair setfst(Object newfst) { 
+            return new Pair(newfst, this.snd); 
+        } 
+    } 
+    new Pair(new A(), new B()).setfst(new B())
 \end{lstlisting}
 
+We always
+\begin{enumerate}
+    \item Include the supertype (even when it is \texttt{Object});
+    \item write out the constructor (even for the trivial classes \texttt{A}
+    and \texttt{B}; 
+    \item write the receiver for the field access (as in \texttt{this.snd}) or
+    a method invocation, even when the receiver is \texttt{this}
+\begin{enumerate}
+Constructor always take the same stylized form: there is one parameter for each
+field, with the same name as the field; the \texttt{super} constructor is
+invoked on the fields of the supertype; and the remaining fields are
+initialized to the corresponding parameters. In this example the supertype is
+always \texttt{Object}, which has no fields, so the invocations of
+\texttt{super} have no arguments. Constructors are the only place where
+\texttt{Super} or = appears in an FJ program. Since FJ provides no
+side-effecting operations, a method body always consists of return followed by
+an expression, as in the body of \texttt{setfst()}.
+
+In the context of the above definitions, the expression
+\begin{lstlisting}[language=Java]
+    \begin{verbatim}
+        new Pair(new A(), new B()).setfst(new B())
+    \end{verbatim}
+\end{lstlisting}
+evaluates to the expression
+\begin{lstlisting}[language=Java]
+    \begin{verbatim}
+        new Pair(new B(), new B())
+    \end{verbatim}
+\end{lstlisting}
+
+There are five forms of expression in FJ
+\begin{enumerate}
+    \item \textit{Object constructors}, like \texttt{new A()}, \texttt{new B()}
+    and \texttt{new Pair(e1, e2)} \end{enumerate};
+    \item \textit{Method invocation}, like \texttt{e3.setfst(e4)};
+    \item \textit{Field access}, like \texttt{this.snd} inside the body of \texttt{setfst};
+    \item \textit{Variabes}, like the occurencies of \texttt{newfst} and \texttt{this};
+    \item \textit{Cast}, like the expression \leavevmode
+        \begin{lstlisting}[language=Java]
+            \begin{verbatim}
+                ((Pair)new Pair(new Pair(new A(), newB()), new A()).fst).snd
+            \end{verbatim}
+        \end{lstlisting}
+        which evaluates to
+        \begin{lstlisting}[language=Java]
+            \begin{verbatim}
+                new B()
+            \end{verbatim}
+        \end{lstlisting}
+\end{enumerate} 
 \subsection{Syntax}
 
 To present the abstract syntax of FJ, first we need to define the meaning of the
@@ -601,21 +679,21 @@ declarations and expressions is given at Table~\ref{abstractsyntax}.
 
 %\begin{center}
 \begin{table}[h!]
-\begin{tabular}{ccl}
-    $L$&~::= & $class\ C~extends~C\ \{\bar{C} \ \bar{f};\ K\
-\bar{M}\}$\\ 
-    \vspace{0.8mm}
-    $K$&~::= &
-$C~(\bar{C}~\bar{f})\
-\{super~(\bar{f});~this.\bar{f}=\bar{f};\}$\\
-    \vspace{0.8mm}
-$M$&~::= & $C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
-    \vspace{0.8mm}
-$e$&~::= & $x~|~e.f~|~e.m~(\bar{e})~|~new~C~(\bar{e})~|~(C)~e$ \\
-\end{tabular} \\
-\vspace{1.5mm}
-\caption{Abstract Syntax}
-\label{abstractsyntax}
+    \caption{Abstract Syntax}
+    \begin{tabular}{ccl}
+            $L$&~::= & $class\ C~extends~C\ \{\bar{C} \ \bar{f};\ K\
+        \bar{M}\}$\\ 
+            \vspace{0.8mm}
+            $K$&~::= &
+        $C~(\bar{C}~\bar{f})\
+        \{super~(\bar{f});~this.\bar{f}=\bar{f};\}$\\
+            \vspace{0.8mm}
+        $M$&~::= & $C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
+            \vspace{0.8mm}
+        $e$&~::= & $x~|~e.f~|~e.m~(\bar{e})~|~new~C~(\bar{e})~|~(C)~e$ \\
+    \end{tabular} \\
+    \vspace{1.5mm}
+    \label{abstractsyntax}
 \end{table}
 %\end{center}
 
@@ -643,6 +721,8 @@ transitive closure of the immediate subclass ralation given by the
 
 \begin{table}[h!]
 	\centering
+    \caption{Subtyping}
+    \label{subtyping}
 	\begin{tabular}{c@{\hskip 1in}c@{\hskip 1in}c}
 		$C~<:~C$ & 
 		\inferrule{C <: D \qquad C <: E}
@@ -651,8 +731,6 @@ transitive closure of the immediate subclass ralation given by the
 		{C~<:~E} 
 	\end{tabular}
 \vspace{1.5mm}
-\caption{Subtyping}
-\label{subtyping}
 \end{table}
 
 The function $fields$ defined at Table~\ref{fieldlookup} returns a list of all
@@ -662,6 +740,8 @@ declared at the superclass of it. It returns an empty list in the case of
 
 \begin{table}[h!]
 	\centering
+    \caption{Field lookup}
+    \label{fieldlookup}
 	\def\arraystretch{2.5}
 	\begin{tabular}{c}
 		$fields~($\texttt{Object}$)=\bullet$ \\
@@ -670,8 +750,6 @@ declared at the superclass of it. It returns an empty list in the case of
 		{fields~(C)=\bar{D}\ \bar{g},\ \bar{C}\ \bar{f}}
 	\end{tabular}
 \vspace{1.5mm}
-\caption{Field lookup}
-\label{fieldlookup}
 \end{table}
 
 The method declaration $D\ m~(\bar{C}\ \bar{x})\ \{return\ e;\}$
@@ -684,6 +762,8 @@ functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 \begin{table}[h!]
 	\centering
 	\def\arraystretch{3}
+    \caption{Method type lookup}
+    \label{mtypelookup}
 	\begin{tabular}{c}
 		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
 		\bar{M}\} \qquad B\ m~(\bar{B}\ \bar{x})\{return\
@@ -694,13 +774,13 @@ functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 		{mtype~(m,~C)=mtype~(m,~D)} \\
 	\end{tabular}
 \vspace{1.5mm}
-\caption{Method type lookup}
-\label{mtypelookup}
 \end{table}
 
 \begin{table}[h!]
 	\centering
+    \caption{Method body lookup}
 	\def\arraystretch{3}
+    \label{mbodylookup}
 	\begin{tabular}{c}
 		\inferrule{class\ C\ extends\ D~\{\bar{C}\ \bar{f};\ K\
 		\bar{M}\} \qquad B\ m~(\bar{B}\ \bar{x})\{return\
@@ -712,8 +792,6 @@ functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 		{mbody~(m,~C)=mbody~(m,~D)} \\
 	\end{tabular}
 \vspace{1.5mm}
-\caption{Method body lookup}
-\label{mbodylookup}
 \end{table}
 
 The given class table is assumed to satisfy some conditions:
@@ -736,6 +814,7 @@ the environment $\Gamma$, expression $e$ has type $C$''.
 \begin{table}[h!]
 	\centering
 	\def\arraystretch{3}
+    \caption{Expression typing}
 	\begin{tabular}{cr}
 		$\Gamma \vdash x:\Gamma(x)$& (T-Var)\\
 
@@ -764,7 +843,6 @@ the environment $\Gamma$, expression $e$ has type $C$''.
 
 	\end{tabular}
 \vspace{1.5mm}
-\caption{Expression typing}
 \label{exptyping}
 \end{table}
 \section{Feature Featherweight Java}
