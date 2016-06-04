@@ -868,10 +868,10 @@ declared at the superclass of it. It returns an empty list in the case of
 \end{table}
 
 The method declaration $D\ m~(\bar{C}\ \bar{x})\ \{return\ e;\}$
-introduces a method name \texttt{m} with result type D and parameters
+introduces a method name $m$ with result type D and parameters
 $\bar{x}$ of types $\bar{C}$. The body of the method is the single
-statement \texttt{return e;}. The variables $\bar{x}$ and the special
-variable \texttt{this} are bound in \texttt{e}. The rules that define these
+statement $return e;$. The variables ${x}$ and the special
+variable ${this}$ are bound in ${e}$. The rules that define these
 functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 
 \begin{table}[h!]
@@ -909,7 +909,7 @@ functions are ilustrated in Tables~\ref{mtypelookup} and~\ref{mbodylookup}.
 \vspace{1.5mm}
 \end{table}
 
-The given class table is assumed to satisfy some conditions:
+The given class table is assumed to satisfy the following conditions:
 \begin{itemize}
 	\item $ CT~(C)=class\ C\ldots$ for every $C\in dom(CT)$
 	\item \texttt{Object}$\notin dom(CT)$
@@ -960,6 +960,59 @@ the environment $\Gamma$, expression $e$ has type $C$''.
 \vspace{1.5mm}
 \label{exptyping}
 \end{table}
+
+\subsection{Computation}
+The reduction relation is of ther form $e \rightarrow e'$, read ``expression
+$e$ reduces to expression $e'$ in one step'', We write $\rightarrow *$ for the
+reflexisive and transitive closure of $\rightarrow$.
+
+The reduction rules are given in~\ref{expcomput}. There are three reduction
+rules, one for field acess, one for method invocation, and one for casting.
+These were already explained above. We write $[\bar{d}=\bar{x}, e=y]e_0$ for
+the result of replacing $x_1$ by $d_1$, $x_2$ by $d_2, \dots, x_n$ by $d_n$, and $y$ by $e$ in
+the expression $e_0$
+
+The reduction rules may be applied at any point in an expression, so we also
+need the obvious congruence rules.
+
+\begin{table}[h!]
+	\centering
+	\def\arraystretch{3}
+    \caption{Expression computation}
+	\begin{tabular}{cr}
+		\inferrule{fields~(C) = \bar{C} \bar{f}}
+        {(new\ C(\bar{e})).f_i \rightarrow e_i} & (R-Field) \\
+
+		\inferrule{mbody~(m, C) = \bar{x}.e_0}
+        {(new\ C~(\bar{e})).m~(\bar{d}) \rightarrow[\bar{d}/\bar{x}, new\ C~(\bar{e})/this]e_0} & (R-Invk)\\
+		\inferrule{C<:D}
+        {(D)(new\ C~(\bar{e})) \rightarrow new\ C~(\bar{e})} & (R-Cast)\\
+	\end{tabular}
+\vspace{1.5mm}
+\label{expcomput}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\def\arraystretch{3}
+    \caption{Congruence}
+	\begin{tabular}{cr}
+		\inferrule{e_0 \rightarrow e_0'}
+        {e_0.f\rightarrow e_0'.f} & (RC-Field) \\
+		\inferrule{e_0 \rightarrow e_0'}
+        {e_0.m~(\bar{e})\rightarrow e_0'.m~(\bar{e})} & (RC-Invk-Recv) \\
+		\inferrule{e_i \rightarrow e_i'}
+        {e_0.m~(\dots, e_i, \dots) \rightarrow e_0'.m~(\dots, e_i, \dots)} & (RC-Invk-Arg) \\
+		\inferrule{e_i \rightarrow e_i'}
+        {new\ C~(\dots, e_i, \dots) \rightarrow new\ C~(\dots, e_i', \dots)} & (RC-New-Arg) \\
+		\inferrule{e_0 \rightarrow e_0'}
+        {(C)e_0 \rightarrow (C)e_0'} & (RC-Cast) \\
+
+	\end{tabular}
+\vspace{1.5mm}
+\label{expcongr}
+\end{table}
+
 \section{Feature Featherweight Java}
 
 This language extends FJ with constructions of \textit{feature-oriented
@@ -972,4 +1025,5 @@ software systems in terms of features~\cite{fop}. A \textit{feature} implements
 a stakeholder's requirement and is tipically an increment in program
 functionality. Different variants of a software system are distinguished in
 terms of their individual features.
+
 
