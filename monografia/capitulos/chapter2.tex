@@ -526,11 +526,11 @@ calculus for modeling Java's type system~\cite{Igarashi99featherweightjava}. The
 design of this language favors compactness over completeness, having just five 
 forms of expression:
 \begin{itemize}
-    \item object creation
-    \item method invocation
-    \item field access
-    \item casting 
-    \item variables
+    \item Object creation;
+    \item Method invocation;
+    \item Field access;
+    \item Casting;
+    \item Variables
 \end{itemize}
 
 Several studies have introduced lightweight versions of Java
@@ -616,11 +616,9 @@ this definitions.
 We always
 \begin{enumerate}
     \item Include the supertype (even when it is \texttt{Object});
-    \item write out the constructor (even for the trivial classes \texttt{A}
-    and \texttt{B}; 
-    \item write the receiver for the field access (as in \texttt{this.snd}) or
-    a method invocation, even when the receiver is \texttt{this}
-\begin{enumerate}
+    \item Write out the constructor (even for the trivial classes \texttt{A} and \texttt{B}; 
+    \item Write the receiver for the field access (as in \texttt{this.snd}) or a method invocation, even when the receiver is \texttt{this}
+\end{enumerate}
 Constructor always take the same stylized form: there is one parameter for each
 field, with the same name as the field; the \texttt{super} constructor is
 invoked on the fields of the supertype; and the remaining fields are
@@ -632,53 +630,132 @@ side-effecting operations, a method body always consists of return followed by
 an expression, as in the body of \texttt{setfst()}.
 
 In the context of the above definitions, the expression
-\begin{lstlisting}[language=Java]
-    \begin{verbatim}
+\begin{alltt}
+    \begin{lstlisting}[language=Java]
         new Pair(new A(), new B()).setfst(new B())
-    \end{verbatim}
-\end{lstlisting}
+    \end{lstlisting}
+\end{alltt}
 evaluates to the expression
-\begin{lstlisting}[language=Java]
-    \begin{verbatim}
+\begin{alltt}
+    \begin{lstlisting}[language=Java]
         new Pair(new B(), new B())
-    \end{verbatim}
-\end{lstlisting}
+    \end{lstlisting}
+\end{alltt}
 
 There are five forms of expression in FJ
 \begin{enumerate}
-    \item \textit{Object constructors}, like \texttt{new A()}, \texttt{new B()}
-    and \texttt{new Pair(e1, e2)} \end{enumerate};
-    \item \textit{Method invocation}, like \texttt{e3.setfst(e4)};
-    \item \textit{Field access}, like \texttt{this.snd} inside the body of \texttt{setfst};
-    \item \textit{Variabes}, like the occurencies of \texttt{newfst} and \texttt{this};
-    \item \textit{Cast}, like the expression \leavevmode
-        \begin{lstlisting}[language=Java]
-            \begin{verbatim}
-                ((Pair)new Pair(new Pair(new A(), newB()), new A()).fst).snd
-            \end{verbatim}
-        \end{lstlisting}
-        which evaluates to
-        \begin{lstlisting}[language=Java]
-            \begin{verbatim}
-                new B()
-            \end{verbatim}
-        \end{lstlisting}
+\item Object constructors, like \texttt{new A()}, \texttt{new B()} and \texttt{new Pair(e1, e2)};
+\item Method invocation, like \texttt{e3.setfst(e4)};
+\item Field access, like \texttt{this.snd} inside the body of \texttt{setfst};
+\item Variabes, like the occurencies of \texttt{newfst} and \texttt{this};
+\item Cast, like the expression %
+\begin{lstlisting}[language=Java]
+((Pair)new Pair(new Pair(new A(), newB()), new A()).fst).snd 
+\end{lstlisting}
+which evaluates to
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}[language=Java]
+new B()
+\end{lstlisting}
+\end{tabular}{c}
+\end{center}
 \end{enumerate} 
+
+In Java, we may prefix a field or parameter declaration with the keyword \texttt{final}
+to indicate that it cannot be reassigned. However, since FJ has no assignments, there is
+no need for such a keyword.
+
+Given that FJ functions has no side effects evaluation gets a lot easier to be formalized.
+Since it can be interely done within the syntax and no need for a heap mechanism whatsoever.
+With the absence of side effects, the order in which expressions are evaluated does not affect
+the final outcome of the computation (except when the program does not terminates).
+
+There are three basic computation rules: one for field access, one for method
+invocation, and one for casts.  It is recursive with the stop condition on the
+\texttt{new} expression. That is to say ``everything is an object'' here in FJ.
+
+The following example shows the rule for field access in action.
+
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}[language=Java, mathescape = true]
+    new Pair(new A(), newB()).snd ${\rightarrow}$ new B()
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+Bringing into attention the object constructors, it has one parameter for each
+field, in the same order that the fields are declared, also taking into account
+its superclasses.  Invocation of methods reduces to the body with the formal
+parameter replaced by the actual, and the special variable \texttt{this}
+replaced by the receiver object. This is similar to the beta rula of the lambda
+calculus. The key differences are the fact that the class of the receiver
+determines where to look for the ody (supporting method override), and the
+substitution of the receiver for \texttt{this} (suporting method override), and
+the substitution of the receiver for \texttt{this}(supporting ``recursion
+through self''). In FJ, as in the lambda calculus and the pure Abadi-Cardeli
+calculus, if a formal parameter appears more than once in the body it may lead
+to duplication of the actual, but since there are no side effects this causes
+no problems.
+
+Here is an example of a reduction of a cast:
+\begin{center}
+\begin{tabular}{c}
+\begin{lstlisting}[language=Java, mathescape = true]
+    (Pair)new Pair(new A(), new B()) ${\rightarrow}$ new Pair(new A(), new B())
+\end{lstlisting}
+\end{tabular}
+\end{center}
+
+When a cast-expression is reduced to an object (i.e. a new-expression), it is
+easy to check that the class of the constructor is a subclass of the target of
+the cast. If so, as in this case, then the reduction removes the cast.
+Otherwise, is in \texttt{(A)new B()}, then no rule applies and the computation
+is \textit{stuck}, raising a runtime error.
+
+There are three ways computation may get stuck: an attempt to access a field
+not declared for the class; an attempt to invoke a method not declared for the
+class; or an attempt to cast to something other than superclass of an object's
+runtime class. The authors provides a proof that the first two never happen in
+well-typed programs, and the third never happens in well-typed programs that
+contain no downcasts (and no ``stupid casts'', which is explained in details
+below).
+
+As usual, it is allowed to apply reductions to any subexpressions of an
+expressions. Below is provided a more complex example, underlining the step of
+the reduction being applied.
+\begin{lstlisting}[language=Java, mathescape = true, escapechar = \*]
+   (Pair)*\underline{new Pair(new Pair(new A(), new B()), new A()).fst}*).snd
+$\rightarrow$ *\underline{(Pair)new Pair(new A(), new B())}*.snd
+$\rightarrow$ *\underline{new Pair(new A(), new B()).snd}*
+$\rightarrow$ new B()
+\end{lstlisting}
+
+In the original paper~\cite{Igarashi99featherweightjava} it is provided a proof
+of a type soundness result for FJ: if a well-typed expression \texttt{e}
+reduces to a normal form, an expression that cannot reduce any further, than
+the normal form is either a well-typepd value (an expression consisting only of
+\texttt{new}), whose type is a subtype of the type of \texttt{e}, or stuck at a
+failing typecast.
+
+With this informal introduction we may now proceed to the formal definitions.
+
 \subsection{Syntax}
 
 To present the abstract syntax of FJ, first we need to define the meaning of the
 following metavariables, which will apear frequently in the rules of FJ's
-grammar: \texttt{A, B, C, D} and \texttt{E} range over class names; \texttt{f}
-and \texttt{g} range over field names; \texttt{m} ranges over method names;
-\texttt{x} ranges over variables; \texttt{d} and \texttt{e} range over
-expressions; \texttt{L} ranges over class declarations; \texttt{K} range over
-constructor declarations and \texttt{M} ranges over method declarations.
+grammar: ${A, B, C, D}$ and ${E}$ range over class names; $f$
+and $g$ range over field names; $m$ ranges over method names;
+$x$ ranges over variables; $d$ and $e$ range over
+expressions; $L$ ranges over class declarations; $K$ range over
+constructor declarations and $M$ ranges over method declarations.
 
 The abstract syntax of FJ class declarations, constructor declarations, method
 declarations and expressions is given at Table~\ref{abstractsyntax}.
 
 %\begin{center}
-\begin{table}[h!]
+\begin{table}[ht!]
     \caption{Abstract Syntax}
     \begin{tabular}{ccl}
             $L$&~::= & $class\ C~extends~C\ \{\bar{C} \ \bar{f};\ K\
@@ -698,8 +775,7 @@ declarations and expressions is given at Table~\ref{abstractsyntax}.
 %\end{center}
 
 The variable \texttt{this} is assumed to be included in the set of variables, but
-it cannot be used as the name of an argument to a method. This detail will be
-important when we discuss the implementation details.
+it cannot be used as the name of an argument to a method. 
 %The evaluation rule for method invocation will have the job of substituing an
 %appropriate object for \texttt{this}, in addition to substituting the argument
 %values for the parameters.
@@ -709,8 +785,8 @@ $f_{1},\ldots,f_{n}$~(and similary for $\bar{C},\ \bar{x},\
 \bar{e}$ etc.) and $\bar{M}$ as a shorthand for
 $M_{1}\ldots M_{n}$~(with no commas).
 
-A class table CT is a mapping from class names \texttt{C} to class declarations
-\texttt{L}. A program is a pair (CT, \texttt{e}) of a class table and an
+A class table CT is a mapping from class names $C$ to class declarations
+$L$. A program is a pair (CT, $e$) of a class table and an
 expression. In FJ, every class has a superclass declared with extends, with
 the exception of \texttt{Object}, which is taken as a distinguished class name
 whose definition does \textit{not} appear in the class table. The class table
@@ -719,7 +795,7 @@ Table~\ref{subtyping}, one can infer that subtyping is the reflexive and
 transitive closure of the immediate subclass ralation given by the
 \texttt{extends} clauses in CT\@. 
 
-\begin{table}[h!]
+\begin{table}[ht!]
 	\centering
     \caption{Subtyping}
     \label{subtyping}
@@ -738,7 +814,7 @@ the fields declared at the current class definition, as well as the fields
 declared at the superclass of it. It returns an empty list in the case of
 \texttt{Object}.
 
-\begin{table}[h!]
+\begin{table}[ht!]
 	\centering
     \caption{Field lookup}
     \label{fieldlookup}

@@ -27,6 +27,12 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
+\usepackage{alltt}
+\def\MLine#1{\par\hspace*{-\@totalleftmargin}\parbox{\textwidth}{\[#1\]}}
+
+\makeatletter
+\newcommand{\displaybump}{\hbox to \@totalleftmargin{\hfil}}
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Labels definitions
