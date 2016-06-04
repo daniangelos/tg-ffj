@@ -703,7 +703,7 @@ Here is an example of a reduction of a cast:
 \begin{center}
 \begin{tabular}{c}
 \begin{lstlisting}[language=Java, mathescape = true]
-    (Pair)new Pair(new A(), new B()) ${\rightarrow}$ new Pair(new A(), new B())
+(Pair)new Pair(new A(), new B()) ${\rightarrow}$ new Pair(new A(), new B())
 \end{lstlisting}
 \end{tabular}
 \end{center}
@@ -739,6 +739,45 @@ the normal form is either a well-typepd value (an expression consisting only of
 \texttt{new}), whose type is a subtype of the type of \texttt{e}, or stuck at a
 failing typecast.
 
+Finally we present the following code with the implementation in FJ of the
+Natural numbers using only the constructor for zero and the successor, known as
+the Peano Numbers~\cite{Peano1889}
+
+\iffalse
+\noident
+\begin{lstlisting}[language=Java]
+class Nat extends Object{
+    Nat(){super();}
+
+    Nat add(Nat rhs){
+        return rhs.add(this);
+    }
+}
+
+class O extends Nat{
+    O(){super();}
+
+    Nat add(Nat rhs){
+        return rhs;
+    }
+}
+
+class S extends Nat{
+    Nat num;
+
+    S(Nat num){
+        super();
+        this.num=num;
+    }
+
+    Nat add(Nat rhs){
+        return this.num.add(new S(rhs));
+    }
+    
+}
+new S(new S(new O())).add(new S(new O()))
+\end{lstsliting}
+\fi
 With this informal introduction we may now proceed to the formal definitions.
 
 \subsection{Syntax}
@@ -933,9 +972,4 @@ software systems in terms of features~\cite{fop}. A \textit{feature} implements
 a stakeholder's requirement and is tipically an increment in program
 functionality. Different variants of a software system are distinguished in
 terms of their individual features.
-
-%FFJ extende FJ com novas construções de linguagem orientados a composição de
-%\textit{features}\cite{fop}, avaliação de acordos e regras de
-%tipo~\cite{Apel08featurefeatherweight}. Em FFJ, um programador pode adicionar
-%novas classes a um programa através da introdução de uma nova característica.
 
