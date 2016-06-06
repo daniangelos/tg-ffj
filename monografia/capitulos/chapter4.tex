@@ -1,9 +1,9 @@
 \chapter{Implementation Details}
 \section{BNFC}
-To generate the \textit{ast}, we used the tool bnfc~\cite{bnfc}, and used the
-following specification to automatically generate the data types used.
+To generate the \textit{ast}, we used the tool BNFC~\cite{bnfc}, and used the
+specification in~\cref{lst:bnf} to automatically generate the data types used.
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}[frame=single, caption={BNF Specification}, label={lst:bnf}, float, floatplacement=H]
 -- Class Declaration
 
 CProgram . Program ::= [ClassDecl] Exp;
@@ -55,10 +55,11 @@ They are the Result data, which allow to program using the do notation, the
 Referable class which provides a staple implementation for searching in a list.
 
 \subsection{Result Data}
-The \texttt{Result} data, which instanciates Monad, this will allow us
-to program using the do notation, and to set up fairly nice error messages using the raise function.
+The \texttt{Result} data, which instanciates Monad, this will allow us to
+program using the do notation, and to set up fairly nice error messages using
+the raise function. The implementation is shown in~\cref{lst:result}.
 
-\begin{lstlisting}[language=Haskell, frame=single, caption={Result Data Implementation}]
+\begin{lstlisting}[language=Haskell, frame=single, caption={Result Data Implementation}, label={lst:result}, float,floatplacement=H]
 type Exception = String
 
 data Result a = Ok a
@@ -75,16 +76,18 @@ instance Monad Result where
 				(Ok a) -> f a
 				(Ex e) -> raise e
 \end{lstlisting}
-Most of our implementation functions will return some \texttt{Result a}
+Most of our implementation functions will return some \texttt{Result a}.
 
 \subsection{Referable Class}
+
 The \texttt{Referable} class provides a default implementation for key
 searching in a list. All we need now is to instantiate our classes as a
 Referable to use this nice and polimorphic class.  One can think about such a
 class as an abstract class in Java, i.e., every class that \texttt{extends} a
-given abstract class, will \texttt{inherit} all of its functions.
+given abstract class, will \texttt{inherit} all of its functions. The
+implementation for the referable class is shown in~\cref{lst:ref}.
 
-\begin{lstlisting}[language=Haskell, frame=single, caption={The Referable Class Implementation}]
+\begin{lstlisting}[language=Haskell, frame=single, caption={The Referable Class Implementation}, label={lst:ref}, float, floatplacement=H]
 class Referable a where 
   ref  :: a -> Id
   find :: Id -> [a] -> Result a
@@ -100,7 +103,7 @@ In the first line we say that the Var data is an instance of Referable, and we
 must provide an implementation for the function ref, which must recieve a Var
 and return an Id, as specified above.
 
-\begin{lstlisting}[language=Haskell, frame=single, caption={A referable Instance}, label={lst:ref-instance}]
+\begin{lstlisting}[language=Haskell, frame=single, caption={A referable Instance}, label={lst:ref-instance}, float, floatplacement=H]
 instance Referable Var where
   ref This = Id "this"
   ref (VarId id) = id

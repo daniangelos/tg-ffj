@@ -585,11 +585,11 @@ of the tricky typing issues in Java are independent of assignment.
 %p: I think it is ok
 In FJ, a program consists of a collection of class definitions, later on
 defined as the class table, and an expression to be evaluated. This expression
-correspods to the body of the \texttt{main} method in full Java. Here is an
-example of some typical class definitions in FJ and a possible expression for
-this definitions.
+correspods to the body of the \texttt{main} method in full Java.
+\cref{lst:pair} is an example of some typical class definitions in FJ and a
+possible expression for this definitions.
 
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[frame = single, language=Java, label={lst:pair}, caption={FJ Pair Example}, language=Java, float,floatplacement=H]
     class A extends Object {
         A() { super(); } 
     } 
@@ -727,11 +727,11 @@ the normal form is either a well-typepd value (an expression consisting only of
 \texttt{new}), whose type is a subtype of the type of \texttt{e}, or stuck at a
 failing typecast.
 
-Finally we present the following code with the implementation in FJ of the
+Finally we present the code with the implementation in FJ of the
 Natural numbers using only the constructor for zero and the successor at~\cref{lst:peano}, known as
 the Peano Numbers~\cite{Peano1889}
 
-\begin{lstlisting}[caption={Peano Encoding for Naturals in FJ}, label={lst:peano}, language=Java]
+\begin{lstlisting}[frame=single, caption={Peano Encoding for Naturals in FJ}, label={lst:peano}, language=Java, float,floatplacement=H]
 class Nat extends Object{
     Nat(){super();}
 
