@@ -23,6 +23,7 @@
 \usepackage{xcolor,graphicx,url}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
+\usepackage{cleveref}
 
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -42,6 +43,17 @@
 \theoremstyle{definition}
 \newtheorem{property}{Property}[section]
 \newtheorem{theorem}{Theorem}[chapter]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% lstsliting configurations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lstset{
+    breaklines=true,
+    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Cores dos links
@@ -129,6 +141,7 @@ Languages, Java, Featherweight Java, FFJ}
   \input{capitulos/chapter1}
   \input{capitulos/chapter2}
   \input{capitulos/chapter3}
+  \input{capitulos/chapter4}
   % ...
 
   \postextual

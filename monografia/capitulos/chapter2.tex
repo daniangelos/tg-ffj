@@ -630,17 +630,13 @@ side-effecting operations, a method body always consists of return followed by
 an expression, as in the body of \texttt{setfst()}.
 
 In the context of the above definitions, the expression
-\begin{alltt}
-    \begin{lstlisting}[language=Java]
-        new Pair(new A(), new B()).setfst(new B())
-    \end{lstlisting}
-\end{alltt}
+\begin{lstlisting}[language=Java]
+new Pair(new A(), new B()).setfst(new B())
+\end{lstlisting}
 evaluates to the expression
-\begin{alltt}
-    \begin{lstlisting}[language=Java]
-        new Pair(new B(), new B())
-    \end{lstlisting}
-\end{alltt}
+\begin{lstlisting}[language=Java]
+new Pair(new B(), new B())
+\end{lstlisting}
 
 There are five forms of expression in FJ
 \begin{enumerate}
@@ -653,13 +649,9 @@ There are five forms of expression in FJ
 ((Pair)new Pair(new Pair(new A(), newB()), new A()).fst).snd 
 \end{lstlisting}
 which evaluates to
-\begin{center}
-\begin{tabular}{c}
 \begin{lstlisting}[language=Java]
 new B()
 \end{lstlisting}
-\end{tabular}{c}
-\end{center}
 \end{enumerate} 
 
 In Java, we may prefix a field or parameter declaration with the keyword \texttt{final}
@@ -677,13 +669,9 @@ invocation, and one for casts.  It is recursive with the stop condition on the
 
 The following example shows the rule for field access in action.
 
-\begin{center}
-\begin{tabular}{c}
 \begin{lstlisting}[language=Java, mathescape = true]
     new Pair(new A(), newB()).snd ${\rightarrow}$ new B()
 \end{lstlisting}
-\end{tabular}
-\end{center}
 
 Bringing into attention the object constructors, it has one parameter for each
 field, in the same order that the fields are declared, also taking into account
@@ -740,12 +728,10 @@ the normal form is either a well-typepd value (an expression consisting only of
 failing typecast.
 
 Finally we present the following code with the implementation in FJ of the
-Natural numbers using only the constructor for zero and the successor, known as
+Natural numbers using only the constructor for zero and the successor at~\cref{lst:peano}, known as
 the Peano Numbers~\cite{Peano1889}
 
-\iffalse
-\noident
-\begin{lstlisting}[language=Java]
+\begin{lstlisting}[caption={Peano Encoding for Naturals in FJ}, label={lst:peano}, language=Java]
 class Nat extends Object{
     Nat(){super();}
 
@@ -776,8 +762,8 @@ class S extends Nat{
     
 }
 new S(new S(new O())).add(new S(new O()))
-\end{lstsliting}
-\fi
+\end{lstlisting}
+
 With this informal introduction we may now proceed to the formal definitions.
 
 \subsection{Syntax}
@@ -970,7 +956,10 @@ The reduction rules are given in~\ref{expcomput}. There are three reduction
 rules, one for field acess, one for method invocation, and one for casting.
 These were already explained above. We write $[\bar{d}=\bar{x}, e=y]e_0$ for
 the result of replacing $x_1$ by $d_1$, $x_2$ by $d_2, \dots, x_n$ by $d_n$, and $y$ by $e$ in
-the expression $e_0$
+the expression $e_0$.
+
+Notice again that with the absense of side effects, there is no need of stack
+or heap for variable binding. 
 
 The reduction rules may be applied at any point in an expression, so we also
 need the obvious congruence rules.
