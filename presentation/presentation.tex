@@ -3,6 +3,14 @@
 \usetheme{Madrid}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil, american]{babel}
+\usepackage{graphicx}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathpartir}
+\usepackage{adjustbox}
+
 
 \title[Formalização de FFJ em Coq]{Formalização de Feature Featherweight Java \\ Utilizando Coq}
 
@@ -30,59 +38,121 @@
 		\tableofcontents
 	\end{frame}
 	
-	\section{Revisão Teórica}
-	\begin{frame}{Revisão Teórica}{Linhas de Produto de Software}
+	\begin{frame}{Revisão Teórica}{Featherweight Java}
 		\centering
-		Falar um pouco de SPLs \\
-		blablabla
+		\begin{block}{Featherweight Java}
+			O que é FJ e FFJ?
+		\end{block}
 	\end{frame}
 	
-	\begin{frame}{Revisão Teórica}{Assistentes de Prova}
+	\begin{frame}{Revisão Teórica}{Featherweight Java}
 		\centering
-		Falar um pouco dos assistentes de prova e do coq \\
-		blablabla
+		\begin{itemize}
+			\item {É uma linguagem feito para modelar um núcleo mínimo do Java}
+			\item {Proposto por teóricos renomados, entre eles \textbf{B. Peirce}}
+			\item Facilmente extensível
+			\item Vem sendo utilizado com sucesso	
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Revisão Teórica}{Featherweight Java}
+		\centering
+		\begin{figure}[h!]
+			\includegraphics[width=\textwidth]{"FJ citations".png}{}
+			\caption[Quantidade de citações do Paper de FJ; This is the second line]
+			{\tabular[t]{@{}l@{}}
+				Citações do Paper de FJ \\ 
+				\scalebox{.5}{\small{Imagem retirada do Google}}\endtabular}
+			
+			\label{fig:fj-citations}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Revisão Teórica}{Características de FJ}
+		FJ possui as seguintes características:
+		\begin{itemize}
+			\item Classes;
+			\item Métodos;
+			\item Atributos (fields);
+			\item Herança;
+			\item Typecasts.
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Revisão Teórica}{Características de FJ}
+		FJ \textbf{omite} as seguintes características:
+		\begin{itemize}
+			\item Assignment;
+			\item Interfaces;
+			\item Overload;
+			\item Null;
+			\item Controle de acesso (p.ex. public e private);
+			\item Metodos abstratos.
+		\end{itemize}
+	 \end{frame}
+	
+	\begin{frame}{Revisão Teórica}{Featherweight Java}
+		\centering
+		\begin{table}[ht!]
+			\caption{Abstract Syntax}
+			\begin{tabular}{ccl}
+				$L$&~::= & $class\ C~extends~C\ \{\bar{C} \ \bar{f};\ K\
+				\bar{M}\}$\\ 
+				\vspace{0.8mm}
+				$K$&~::= &
+				$C~(\bar{C}~\bar{f})\
+				\{super~(\bar{f});~this.\bar{f}=\bar{f};\}$\\
+				\vspace{0.8mm}
+				$M$&~::= & $C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
+				\vspace{0.8mm}
+				$e$&~::= & $x~|~e.f~|~e.m~(\bar{e})~|~new~C~(\bar{e})~|~(C)~e$ \\
+			\end{tabular} \\
+			\vspace{1.5mm}
+			\label{abstractsyntax}
+		\end{table}
+	\end{frame}
+	
+	\begin{frame}{Revisão Teórica}{Feature Featherweight Java}
+		\centering
+		\begin{block}{Feature Featherweight Java}
+			Adiciona o conceito de features a FJ
+		\end{block}
 	\end{frame}
 
-	\section{Motivação}
-	\begin{frame}{Motivação}
-			\centering
-			Formalizar Haephestus
+	
+	\begin{frame}{Revisão Teórica}{Assitentes de Prova}
+		\centering
+		\begin{block}{Assistentes de Prova}
+			Erros em provas formais podem passar despercebidos a humanos.\\
+			Mas não para computadores!
+		\end{block}
+		
+		\begin{block}{Coq}
+			\begin{itemize}
+				\item Possui um núcleo checado mecanicamente;
+				\item Possui uma boa documentação e livros didáticos;
+				\item Possuo um prática razoável.
+			\end{itemize}
+		\end{block}
 	\end{frame}
+
 	
 	\section{Problema e Hipótese}
+	\begin{frame}{Problema}
+		\begin{block}{}
+			Ainda não existe checagem assistida por computadores de FFJ. \\
+			Isto indica que falhas possam existir nas provas de corretude da linguagem.
+		\end{block}
+	\end{frame}
+	
+	
 	\begin{frame}{Hipótese}
 		\begin{block}{}
-			Formalizar FFJ nos dará uma base sólida para compreendermos os próximos passos para formalizar um SPL
+			Será possível utilizar o livro Software Foundations para alavancar o trabalho inicial no Coq e seguir a partir daí sem maiores dificuldades.
 		\end{block}
 	\end{frame}
 			
-	\begin{frame}{Problema}
-		\begin{block}{Coq}
-			Formalizar FFJ em Coq
-		\end{block}
-	\end{frame}
-	
-	\section{Featherweight Java}
-	\begin{frame}{Featherweight Java}
-		\centering
-		Explicação de FJ, falar que não tem variable assignment e o que ten e tals
-	\end{frame}
-	\begin{frame}{Featherweight Java}{Exemplo de Programa}
-		\centering
-		Exemplo de um programa FJ
-	\end{frame}
-	\begin{frame}{Feature Featherweight Java}
-		\centering
-		Definição formal de FFJ falar qual a sacada e pans
-	\end{frame}
-	\begin{frame}{Feature Featherweight Java}{Exemplo de Programa}
-		\centering
-		Definição formal de FFJ
-	\end{frame}
-	
-
-	
-	\section{Justificativa e Motivação}
+	\section{Justificativa}
 	
 	
 	\begin{frame}{Justificativa}
@@ -108,6 +178,13 @@
 	\end{frame}
 	
 	
+	\section{Motivação}
+	\begin{frame}{Motivação}
+		\centering
+		\scalebox{2}{Formalizar Haephestus}
+	\end{frame}
+	
+	
 	\section{Cronograma}
 	\begin{frame}{Cronograma}
 		\begin{table}
@@ -127,13 +204,6 @@
 	
 	\section{Resultados Esperados}
 	
-	\begin{frame}{Resultados Esperados}
-		\begin{itemize}
-			\item Implementação 
-		\end{itemize}
-	\end{frame}
-	
-	
 	
 	\appendix
 	\section<presentation>*{\appendixname}
@@ -148,24 +218,26 @@
 			% Start with overview books.
 			
 			\bibitem{IntroMovel}
-			Salzburg Research Forschungsgesellschaft m.b.H
-			\newblock Developing Semantic CMS Applications - The IKS Handbook
+			Harper, Robert. 
+			\newblock Practical foundations for programming languages. 
+			\newblock Cambridge University Press, 2012.
 			
 			
 			\beamertemplatearticlebibitems
 			% Followed by interesting articles. Keep the list short. 
 			\bibitem{IntroMovel}
-			Berners-Lee, Tim and Lassila, Ora and Hendler, James
-			\newblock The semantic web
-			\newblock  Scientific America, 2001
+			Igarashi, Atsushi, Benjamin C. Pierce, and Philip Wadler.
+			\newblock Featherweight Java: a minimal core calculus for Java and GJ.
+			\newblock ACM Transactions on Programming Languages and Systems (TOPLAS) 2001.
 			
 			
 			
 			\beamertemplatearticlebibitems
 			% Followed by interesting articles. Keep the list short. 
 			\bibitem{IntroMovel}
-			Berners-Lee, Tim and Cailliau, Robert and Groff, Jean-François and Pollermann, Bernd
-			\newblock World-wide web: the information universe
+			Apel, Sven, Christian Kästner, and Christian Lengauer.
+			\newblock Feature Featherweight Java: A calculus for feature-oriented programming and stepwise refinement
+			\newblock Proceedings of the 7th international conference on Generative programming and component engineering. ACM, 2008.
 			
 			
 			
@@ -177,6 +249,100 @@
 	\section*{Perguntas}
 	\begin{frame}{  }
 		\Large   \centering   Perguntas?
+	\end{frame}
+	
+	\begin{frame}{Regras de Tipagem FJ}
+		\begin{table}[h!]
+			\centering
+			\def\arraystretch{3}
+			\adjustbox{max height=\dimexpr\textheight-5.5cm\relax, max width=\textwidth}{
+			\begin{tabular}{cr}
+				$\Gamma \vdash x:\Gamma(x)$& (T-Var)\\
+				
+				\inferrule{\Gamma \vdash e_{0}:C_{0}\qquad fields~(C_{0})=\bar{C}\
+					\bar{f}}
+				{\Gamma \vdash e_{0}.f_{i}:C_{i}} & (T-Field)\\
+				
+				\inferrule{\Gamma \vdash e_{0}:C_{0}\qquad
+					mtypes~(m,~C_{0})=\bar{D}\rightarrow C\qquad \Gamma \vdash
+					\bar{e} : \bar{C} \qquad \bar{C}~<:~\bar{D}}
+				{\Gamma \vdash e_{0}.m(\bar{e}):C} & (T-Invk)\\
+				
+				\inferrule{fields(C)=\bar{D}\ \bar{f}\qquad \Gamma \vdash
+					\bar{e}:\bar{C} \qquad \bar{C}~<:~\bar{D}}
+				{\Gamma \vdash new\ C(\bar{e}):C} & (T-New)\\
+				
+				\inferrule{\Gamma \vdash e_{0}:D \qquad D~<:~C}
+				{\Gamma \vdash (C)~e_{0}: C} & (T-UCast)\\
+				
+				\inferrule{\Gamma \vdash e_{0}:D\qquad C~<:~D \qquad C \neq D}
+				{\Gamma \vdash (C)~e_{0}:C} & (T-DCast)\\
+				
+				\inferrule{\Gamma \vdash e_{0}:D\qquad C~\nless :~D \qquad D~\nless:~C 
+					\qquad stupid\ warning}
+				{\Gamma \vdash (C)~e_0:C} & (T-SCast)\\
+				
+			\end{tabular}}
+			\vspace{1.5mm}
+			\label{exptyping}
+		\end{table}
+	\end{frame}
+	
+	\begin{frame}{Regras de Computação FJ}
+		\begin{table}[h!]
+			\centering
+			\def\arraystretch{3}
+			\begin{tabular}{cr}
+				\inferrule{fields~(C) = \bar{C} \bar{f}}
+				{(new\ C(\bar{e})).f_i \rightarrow e_i} & (R-Field) \\
+				
+				\inferrule{mbody~(m, C) = \bar{x}.e_0}
+				{(new\ C~(\bar{e})).m~(\bar{d}) \rightarrow[\bar{d}/\bar{x}, new\ C~(\bar{e})/this]e_0} & (R-Invk)\\
+				\inferrule{C<:D}
+				{(D)(new\ C~(\bar{e})) \rightarrow new\ C~(\bar{e})} & (R-Cast)\\
+			\end{tabular}
+			\vspace{1.5mm}
+			\label{expcomput}
+		\end{table}
+	\end{frame}
+	
+	
+	\begin{frame}{Regras de Congruencia FJ}
+		\begin{table}[h!]
+			\centering
+			\def\arraystretch{3}
+			\begin{tabular}{cr}
+				\inferrule{e_0 \rightarrow e_0'}
+				{e_0.f\rightarrow e_0'.f} & (RC-Field) \\
+				\inferrule{e_0 \rightarrow e_0'}
+				{e_0.m~(\bar{e})\rightarrow e_0'.m~(\bar{e})} & (RC-Invk-Recv) \\
+				\inferrule{e_i \rightarrow e_i'}
+				{e_0.m~(\dots, e_i, \dots) \rightarrow e_0'.m~(\dots, e_i, \dots)} & (RC-Invk-Arg) \\
+				\inferrule{e_i \rightarrow e_i'}
+				{new\ C~(\dots, e_i, \dots) \rightarrow new\ C~(\dots, e_i', \dots)} & (RC-New-Arg) \\
+				\inferrule{e_0 \rightarrow e_0'}
+				{(C)e_0 \rightarrow (C)e_0'} & (RC-Cast) \\
+				
+			\end{tabular}
+			\vspace{1.5mm}
+			\label{expcongr}
+		\end{table}
+	\end{frame}
+	
+	\begin{frame}{Subtipagem FJ}
+		\begin{table}[ht!]
+			\centering
+			\label{subtyping}
+			{\renewcommand{\arraystretch}{3}
+			\begin{tabular}{c}
+				$C~<:~C$ \\
+				\inferrule{C <: D \qquad C <: E}
+				{C <: E} \\
+				\inferrule{class~C~extends~D~\{~\ldots~\}}
+				{C~<:~D}
+			\end{tabular}}
+			\vspace{1.5mm}
+		\end{table}
 	\end{frame}
 \end{document}
 

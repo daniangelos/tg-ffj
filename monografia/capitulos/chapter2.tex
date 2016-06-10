@@ -829,12 +829,12 @@ transitive closure of the immediate subclass ralation given by the
 		\inferrule{C <: D \qquad C <: E}
 		{C <: E} &
 		\inferrule{class~C~extends~D~\{~\ldots~\}}
-		{C~<:~E} 
+		{C~<:~D} 
 	\end{tabular}
 \vspace{1.5mm}
 \end{table}
 
-The function $fields$ defined at Table~\ref{fieldlookup} returns a list of all
+The function $fields$ defined at Table~\ref{field} returns a list of all
 the fields declared at the current class definition, as well as the fields
 declared at the superclass of it. It returns an empty list in the case of
 \texttt{Object}.
