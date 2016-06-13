@@ -37,7 +37,7 @@
 	\begin{frame}{Roteiro}
 		\tableofcontents
 	\end{frame}
-	
+	\section{Revisão Teórica}
 	\begin{frame}{Revisão Teórica}{Featherweight Java}
 		\centering
 		\begin{block}{Featherweight Java}
@@ -94,16 +94,16 @@
 	\begin{frame}{Revisão Teórica}{Featherweight Java}
 		\centering
 		\begin{table}[ht!]
-			\caption{Abstract Syntax}
+			\caption{Abstract Syntax FJ}
 			\begin{tabular}{ccl}
-				$L$&~::= & $class\ C~extends~C\ \{\bar{C} \ \bar{f};\ K\
-				\bar{M}\}$\\ 
+				$CD$&~::= & $class\ C~extends~D\ \{\bar{C} \ \bar{f};\ KD\
+				\bar{MD}\}$\\ 
 				\vspace{0.8mm}
-				$K$&~::= &
-				$C~(\bar{C}~\bar{f})\
-				\{super~(\bar{f});~this.\bar{f}=\bar{f};\}$\\
+				$KD$&~::= &
+				$C~(\bar{D}~\bar{g},\ \bar{C}~\bar{f})\
+				\{super~(\bar{g});~this.\bar{f}=\bar{f};\}$\\
 				\vspace{0.8mm}
-				$M$&~::= & $C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
+				$MD$&~::= & $C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
 				\vspace{0.8mm}
 				$e$&~::= & $x~|~e.f~|~e.m~(\bar{e})~|~new~C~(\bar{e})~|~(C)~e$ \\
 			\end{tabular} \\
@@ -114,10 +114,32 @@
 	
 	\begin{frame}{Revisão Teórica}{Feature Featherweight Java}
 		\centering
+		\begin{block}{Features}
+			Feature é um incremento na funcionalidade de um programa.
+		\end{block}
 		\begin{block}{Feature Featherweight Java}
 			Adiciona o conceito de features a FJ
 		\end{block}
-	\end{frame}
+	\end{frame}	
+	
+	\begin{frame}{Revisão Teórica}{Feature Featherweight Java}
+	\centering
+	\begin{table}[ht!]
+		\caption{Abstract Syntax FFJ}
+		\begin{tabular}{ccl}
+			$CR$&~::= & $refines\ class\ C\{\bar{C} \ \bar{f};\ KR\
+			\bar{MD}\ \bar{MR}\}$\\ 
+			\vspace{0.8mm}
+			$KR$&~::= &
+			$C~(\bar{E}~\bar{h},\ \bar{C}~\bar{f})\
+			\{original~(\bar{h});~this.\bar{f}=\bar{f};\}$\\
+			\vspace{0.8mm}
+			$MR$&~::= & $refinese\ C~m~(\bar{C}~\bar{x})\ \{return~e;\}$\\
+		\end{tabular} \\
+		\vspace{1.5mm}
+		\label{abstractsyntax}
+	\end{table}
+\end{frame}
 
 	
 	\begin{frame}{Revisão Teórica}{Assitentes de Prova}
@@ -127,11 +149,11 @@
 			Mas não para computadores!
 		\end{block}
 		
-		\begin{block}{Coq}
+		\begin{block}{Por quê Coq?}
 			\begin{itemize}
 				\item Possui um núcleo checado mecanicamente;
 				\item Possui uma boa documentação e livros didáticos;
-				\item Possuo um prática razoável.
+				\item Respeita ZFC
 			\end{itemize}
 		\end{block}
 	\end{frame}
@@ -173,8 +195,8 @@
 	\begin{frame}{Metodologia}
 		\centering
 		\begin{block}{}
-		\textit{``You'll finally really learn whatever programming language you're writing a compiler for. There's no other way. Sorry!''} -  Steve Yegge
-	\end{block}
+			\textit{``You'll finally really learn whatever programming language you're writing a compiler for. There's	no other way. Sorry!''} -  Steve Yegge
+		\end{block}
 	\end{frame}
 	
 	
@@ -201,8 +223,6 @@
 			\end{tabular} 
 		\end{table}
 	\end{frame}
-	
-	\section{Resultados Esperados}
 	
 	
 	\appendix
