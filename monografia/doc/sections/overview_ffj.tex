@@ -1,0 +1,66 @@
+\chapter{Overview of \ac{FFJ} and \ac{FFJ+}}\label{seq:offj}
+
+\acf{FFJ} is a core calculus for \acf{FOP}, which was built 
+upon an extension of \acf{FJ}---a minimal subset of Java. 
+In \ac{FFJ}, classes can be added and modified by the 
+introduction of a new feature, that is, 
+an existing class can be extended by a class refinement. 
+A class refinement is declared like a conventional class, though 
+preceded by the keyword \texttt{refines}. For example, 
+\texttt{refines class C \{$\dots$\}} refers to a class
+refinement that
+\emph{refines} the class \texttt{C}. The same can be achieved 
+for method introduction and modification. Methods refinement,
+however, override a previous definition of the corresponding 
+method.
+ 
+% \ac{FJ} models a minimal subset of Java. \ac{FFJ} extends \ac{FJ} for \ac{FOP}.
+To fully mechanize \ac{FFJ}, we had to disambiguate and enhance 
+the language to some extent that it  deserves the attention of 
+formally documenting these changes. 
+Even though these changes are significant, as discussed in Section~\ref{seq:ffj}, 
+the philosophy of \ac{FFJ}, \ac{FOP}, and Stepwise Refinement are maintained.
+Due to the lack of space we will not provide neither the formal definition 
+of \ac{FJ} nor \ac{FFJ}, but we refer the reader the original formalization of \ac{FJ}~\cite{igarashi_featherweight_2001}.
+ and \ac{FFJ}~\cite{apel_feature_2008}
+In \ac{FFJ}, as well as in \ac{FFJ+}, classes can be added and 
+modified by the introduction of a new feature (as discussed in the previous section).
+An existing class can be extended by a class refinement. A class refinement is declared like a class but
+preceded by the keyword \texttt{refines}. For example, \texttt{refines class C@feat \{$\dots$\}} refers to a class refinement that
+refines the class \texttt{C}. The same can be achieved for method introduction and modification. Methods refinement,
+however, will override the previous definition.
+
+A syntactical difference between \ac{FFJ} and \ac{FFJ+} is that, in \ac{FFJ+}, 
+the feature notion appears in the abstract syntax tree (AST) of the language.
+While the designers of \ac{FFJ} argue that the programmer does not have 
+to explicitly state which feature a class or method belongs to, 
+we favored the approach of stating the feature in the name of every refinement.
+This greatly simplifies the structure of the formalism of the language and can be 
+seen as an information gathered by the parser to build the AST, and thus 
+the actual code expressed using the concrete syntax of this language 
+might not have these annotations.
+
+In addition, an \ac{FFJ+} program has a table with every class 
+declaration (\textsf{CT}) and another table with every class refinement (\textsf{RT}).
+We make this distinction to simplify the extension from \ac{FJ} in \texttt{Coq}, since 
+with this decision we eliminate the need to match whether a class in the table 
+is a refination or a declaration. From this \textsf{RT} we can retrieve the composition order
+of the refinements and build the refinement chain of the program, 
+which is used to check if features were composed correctly and
+does not references features that have not been introduced yet. 
+Notice that we redefine the denotation of \textsf{RT} from \ac{FFJ}.
+In the original version, it was used to retrieve the refinement name given a 
+refinement declaration. This is no longer necessary in \ac{FFJ+}, since
+that information is already encoded in the syntax.
+
+Finally, in the original definition of \ac{FFJ}, the lookup functions are 
+somewhat circumvoluted. Accordingly, we propose a very different approach
+for them, with the aim as been not only as formal and simple as possible, 
+but also easy to evolve from our mechanized version of \ac{FJ}. 
+To this end, we eliminate the need for reverse field lookup, reverse method lookup, 
+and the refinement relation. A formal description with all these changes 
+is given in Section~\ref{subsec:lookup}. Note that, we were only 
+able to conceive these improvements while formalizing \ac{FFJ+} in 
+\texttt{Coq}. 
+
+

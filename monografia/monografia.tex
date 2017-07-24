@@ -16,19 +16,36 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[english]{babel}
+\usepackage[nolist,nohyperlinks]{acronym}
 \usepackage[T1]{fontenc}
 \usepackage{indentfirst}
 \usepackage{natbib}
 \usepackage{mathpartir}
 \usepackage{xcolor,graphicx,url}
 \usepackage[utf8]{inputenc}
-\usepackage{listings}
+\usepackage{listings, tabularx}
 \usepackage{cleveref}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{alltt}
+\usepackage{xcolor, colortbl}
+\usepackage{soul}
+\usepackage{wrapfig}
 \def\MLine#1{\par\hspace*{-\@totalleftmargin}\parbox{\textwidth}{\[#1\]}}
+
+
+\definecolor{shyellow}{rgb}{.9, .8, .2}
+\definecolor{shpurple}{rgb}{.9, .6, .8}
+
+\newcommand{\hlmod}[1]{{%
+    \sethlcolor{shyellow}\hl{#1}}%
+}
+
+\newcommand{\hlnew}[1]{{%
+    \sethlcolor{shpurple}\hl{#1}}%
+}
+
 
 \makeatletter
 \newcommand{\displaybump}{\hbox to \@totalleftmargin{\hfil}}
@@ -82,7 +99,7 @@
 \orientador{\prof \dr Rodrigo Bonifácio de Almeida}{CIC/UnB}
 %\coorientador[a]{\prof[a] \dr[a] Coorientadora}{MAT/UnB}
 \coordenador{\prof \dr Rodrigo Bonifácio de Almeida}{CIC/UnB}
-\diamesano{6}{junho}{2016}
+\diamesano{6}{agosto}{2017}
 
 \membrobanca{\prof \dr Rodrigo B. de Almeida}{CIC/UnB}
 \membrobanca{\prof \dr Flávio L. C Moura}{CIC/UnB}
@@ -100,6 +117,14 @@ Languages, Java, Featherweight Java, FFJ}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Texto
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\acrodef{FOP}[FOP]{Feature Oriented Programming}
+\acrodef{ITP}[ITP]{Interactive Theorem Prover}
+\acrodef{FJ}[FJ]{Featherweight Java}
+\acrodef{FFJ}[FFJ]{Feature Featherweight Java}
+% \acrodef{FFJ+}[FFJ\textsubscript{+}]{Overhaul Feature Featherweight Java}
+\acrodef{FFJ+}[FFJ$\star$]{Overhaul Feature Featherweight Java}
 
 \begin{document}
   \maketitle
@@ -122,25 +147,21 @@ Languages, Java, Featherweight Java, FFJ}
   %estas duas frentes e especificar formalmente Feature Featherweight Java em
   %Coq e provar sua corretude.  \end{resumo}
 
-  \begin{abstract}
-      Languages formal especification are very effective to detect bugs and,
-      more importantly, provides a deeper understanding of its underlying
-      structure.  Formal especification tools, such as Coq, have been target of
-      great research interests in the previous years, one of the main reasons
-      is for its proved soundness. The main goal of this paper is to bring
-      together these two fronts and formally specify Feature Featherweight Java
-      with Coq and prove its soundness.
-  \end{abstract}
-
+  \input{abstract}
   \tableofcontents
   \listoffigures
   \listoftables
 
-  \textual
-  \input{capitulos/chapter1}
-  \input{capitulos/chapter2}
-  \input{capitulos/chapter3}
-  \input{capitulos/chapter4}
+  \textual    
+  \input{doc/introduction}
+
+  \input{doc/sections/fop}
+  \input{doc/sections/overview_ffj}
+  \input{doc/sections/feature_featherweight_java}
+  \input{doc/sections/related_work}
+  \input{doc/sections/implications}
+  \input{doc/sections/conclusion}
+
   % ...
 
   \postextual
